@@ -51,23 +51,8 @@ export default async function HomePage() {
     <>
       {/* ───────────── HERO ───────────── */}
       <section className="relative bg-ivory overflow-hidden">
-        <div className="relative md:absolute md:inset-0 aspect-[1.16] md:aspect-auto overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/hero-saree.jpg"
-            alt="Woman in a wine and gold zari silk saree in a sunlit colonnade"
-            className="hero-img absolute inset-0 w-full h-full object-cover object-[78%_40%] md:object-[70%_35%]"
-          />
-          <div
-            aria-hidden="true"
-            className="hidden md:block absolute inset-0 bg-gradient-to-r from-ivory via-ivory/80 via-35% to-transparent to-65%"
-          />
-        </div>
-
-        <div
-          className="relative shell flex items-center md:min-h-[clamp(620px,calc(100svh-var(--header-height)-36px),880px)]"
-        >
-          <div className="max-w-[560px] py-10 md:py-20">
+        <div className="relative shell grid grid-cols-1 md:grid-cols-[1fr_auto] items-center gap-8 md:gap-[6%] py-8 md:py-14">
+          <div className="order-2 md:order-1 max-w-[560px] pb-6 md:py-6">
             <p className="section-label hero-label hero-fade" style={{ ["--d" as string]: "0.15s" }}>
               <span />
               Saree boutique · Guntur
@@ -98,6 +83,17 @@ export default async function HomePage() {
             <p className="hero-fade micro text-ink-muted mt-8" style={{ ["--d" as string]: "1.05s" }}>
               Mul Cotton · Georgette · Semi Pattu · Designer · Work
             </p>
+          </div>
+
+          <div className="order-1 md:order-2 justify-self-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/aliveli-poster.png"
+              alt="Aliveli Vastralaya poster: exclusive sarees, 2-piece and 3-piece sets, designer blouse customization, maggam work and computer embroidery, step-to-door service. Call 8977754414 or 9347492414."
+              width={1024}
+              height={1536}
+              className="hero-fade w-full max-w-[460px] md:w-auto md:max-h-[clamp(560px,calc(100svh-var(--header-height)-60px),820px)] h-auto object-contain shadow-[0_30px_60px_-30px_rgba(45,18,23,0.45)]"
+            />
           </div>
         </div>
       </section>
@@ -310,10 +306,10 @@ export default async function HomePage() {
           <div data-reveal="curtain" className="relative aspect-[4/5] overflow-hidden order-1 lg:order-none">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/images/brand-story.jpg"
-              alt="Woman in a red and gold checked saree leaning in a wooden doorway"
+              src="/images/aliveli-portrait.png"
+              alt="Woman in a deep plum saree with an embroidered blouse and gold temple jewellery"
               loading="lazy"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-[50%_68%]"
             />
           </div>
           <div>

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { SAMPLE_PRODUCTS } from "@/data/catalog";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://alivelivasthralaya.example";
+  const baseUrl = "https://botique-mocha.vercel.app";
   const staticRoutes = [
     "",
     "/shop",

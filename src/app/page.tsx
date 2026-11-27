@@ -1,29 +1,32 @@
 import React from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { COLLECTIONS, INSTAGRAM_GALLERY_ITEMS, OCCASIONS } from "@/data/catalog";
+import { ArrowRight, Gem, HandHeart, Instagram, Sparkles, Scissors } from "lucide-react";
+import {
+  COLLECTIONS,
+  INSTAGRAM_GALLERY_ITEMS,
+  OCCASIONS,
+  PLACEHOLDER_TESTIMONIALS,
+} from "@/data/catalog";
 import { getFeaturedProducts } from "@/lib/db/repository";
 import { BRAND_CONFIG, buildWhatsAppEnquiryUrl } from "@/lib/brand";
 import { ProductCard } from "@/components/ProductCard";
 import { TestimonialSlider } from "@/components/TestimonialSlider";
-import { CollectionRail } from "@/components/CollectionRail";
 import { ContactEnquirySection } from "@/components/ContactEnquirySection";
 
-const d = (ms: number) => ({ ["--d" as string]: `${ms}ms` }) as React.CSSProperties;
+/** One-line descriptions for the collection tiles. */
+const COLLECTION_LINES: Record<string, string> = {
+  "mul-cotton": "Breathable, featherlight drapes for everyday grace.",
+  georgette: "Fluid drapes with delicate borders for celebrations.",
+  "semi-pattu": "Lustrous weaves and zari borders for festive days.",
+  designer: "Statement pieces with refined embroidery.",
+  "work-sarees": "Stone, cutwork and embellished borders for big occasions.",
+};
 
-const PROMISES = [
-  { title: "Curated weaves", text: "Mul cotton, georgette, semi pattu, designer and work sarees, chosen piece by piece." },
-  { title: "Tradition, refined", text: "Classic borders and motifs, with a contemporary eye for drape and colour." },
-  { title: "Quality first", text: "Every saree is checked for fall, border finish and how it wears over the years." },
-  { title: "Personal guidance", text: "Help with colours, fabrics and occasions in our Guntur store or on WhatsApp." },
-];
-
-const SAREE_CHIPS = [
-  { slug: "mul-cotton", label: "Mul Cotton", color: "#0b8a8f" },
-  { slug: "georgette", label: "Georgette", color: "#d81b74" },
-  { slug: "semi-pattu", label: "Semi Pattu", color: "#c98a00" },
-  { slug: "designer", label: "Designer", color: "#a3122f" },
-  { slug: "work-sarees", label: "Work Sarees", color: "#f58220" },
+const VALUES = [
+  { icon: Gem, title: "Curated weaves", text: "Mul cotton, georgette, semi pattu, designer and work sarees, chosen piece by piece." },
+  { icon: Scissors, title: "Tradition, refined", text: "Classic borders and motifs, with a contemporary eye for drape and colour." },
+  { icon: Sparkles, title: "Quality first", text: "Every saree is checked for fall, border finish and how it wears over the years." },
+  { icon: HandHeart, title: "Personal guidance", text: "Help with colours, fabrics and occasions in our Guntur store or on WhatsApp." },
 ];
 
 const FAQS = [
@@ -49,235 +52,181 @@ const FAQS = [
   },
 ];
 
+function SectionHead({
+  eyebrow,
+  title,
+  text,
+  link,
+}: {
+  eyebrow: string;
+  title: React.ReactNode;
+  text?: string;
+  link?: { href: string; label: string };
+}) {
+  return (
+    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 md:mb-12">
+      <div className="max-w-[620px]">
+        <p className="eyebrow">{eyebrow}</p>
+        <h2 className="h-section mt-4 text-ink">{title}</h2>
+        {text && <p className="mt-4 text-[17px] leading-[1.7] text-ink-muted">{text}</p>}
+      </div>
+      {link && (
+        <Link href={link.href} className="btn-ghost self-start md:self-auto shrink-0">
+          {link.label}
+          <ArrowRight className="w-4 h-4" aria-hidden="true" />
+        </Link>
+      )}
+    </div>
+  );
+}
+
 export default async function HomePage() {
   const featured = (await getFeaturedProducts()).slice(0, 4);
-  const whatsapp = buildWhatsAppEnquiryUrl(
-    "Hello Aliveli Vasthralaya, I would like to enquire about your sarees."
-  );
+  const reviews = PLACEHOLDER_TESTIMONIALS.filter((t) => !t.isPlaceholder);
 
   return (
     <>
-      {/* ───────────── HERO ───────────── */}
-      <section className="relative hero-festive text-paper overflow-hidden">
-        <div className="relative shell grid grid-cols-1 md:grid-cols-[1fr_auto] items-center gap-6 md:gap-[5%] py-8 md:py-12">
-          <div className="order-2 md:order-1 max-w-[580px] pb-8 md:py-6">
-            <p className="section-label hero-label hero-fade !text-gold-light" style={{ ["--d" as string]: "0.15s" }}>
-              <span />
-              Saree boutique · Guntur
-            </p>
-            <h1 className="mt-7 mb-6 text-[clamp(50px,6.4vw,100px)] leading-[0.96] tracking-[-0.055em] text-paper">
-              <span className="hero-line">
-                <span style={{ ["--i" as string]: 0 }}>Elegance, woven</span>
-              </span>
-              <span className="hero-line">
-                <span style={{ ["--i" as string]: 1 }}>
-                  in every <em>thread.</em>
-                </span>
-              </span>
+      {/* ───────────── 3. HERO ───────────── */}
+      <section className="bg-paper overflow-hidden">
+        <div className="shell grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] items-center gap-10 lg:gap-16 py-10 md:py-16 lg:py-20">
+          <div className="max-w-[600px]">
+            <p className="eyebrow">Saree boutique · Guntur</p>
+            <h1 className="h-display mt-5 text-ink">
+              Elegance, woven in every <em>thread.</em>
             </h1>
-            <p className="hero-fade lede max-w-[440px] !text-[#f4e9cf]" style={{ ["--d" as string]: "0.75s" }}>
+            <p className="mt-6 text-[18px] leading-[1.7] text-ink-muted max-w-[480px]">
               Timeless sarees that celebrate the beauty, tradition and grace of Indian women — chosen with
               care, and offered with personal guidance.
             </p>
-            <div className="hero-fade mt-8 flex flex-wrap items-center gap-4" style={{ ["--d" as string]: "0.9s" }}>
+            <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <Link href="/collections" className="btn-solid">
                 Explore collections
-                <ArrowRight className="w-4 h-4 stroke-[1.6]" />
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>
-              <Link
-                href="/shop"
-                className="inline-flex items-center min-h-[50px] px-7 rounded-full border-[1.5px] border-gold-light text-gold-light text-[11px] font-semibold tracking-[0.16em] uppercase hover:bg-gold-light hover:text-dark transition-colors"
-              >
+              <Link href="/shop" className="btn-ghost">
                 Shop all sarees
               </Link>
             </div>
-            <div className="hero-fade mt-9 flex flex-wrap gap-2.5" style={{ ["--d" as string]: "1.05s" }}>
-              {SAREE_CHIPS.map((c) => (
-                <Link key={c.slug} href={`/shop?collection=${c.slug}`} className="chip" style={{ background: c.color }}>
-                  {c.label}
-                </Link>
-              ))}
-            </div>
+            <p className="mt-8 text-[14px] text-ink-muted">
+              Mul Cotton <span className="text-gold">·</span> Georgette <span className="text-gold">·</span> Semi
+              Pattu <span className="text-gold">·</span> Designer <span className="text-gold">·</span> Work Sarees
+            </p>
           </div>
 
-          <div className="order-1 md:order-2 justify-self-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/aliveli-logo-hero.webp"
-              alt="Aliveli Vasthralaya — Celebrating Indian Elegance"
-              width={760}
-              height={760}
-              className="hero-fade logo-glow w-full max-w-[380px] md:max-w-none md:w-[clamp(380px,38vw,600px)] h-auto"
-            />
+          <div className="justify-self-center w-full max-w-[440px] lg:max-w-[480px]">
+            <div className="gold-frame hero-fade" style={{ ["--d" as string]: "0.1s" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/aliveli-poster.webp"
+                alt="Aliveli Vasthralaya — Celebrating Indian Elegance. Exclusive sarees, 2-piece and 3-piece sets, designer blouse customization, maggam work and computer embroidery, elegant collections for every occasion, and step-to-door service. Call 8977754414 or 9347492414."
+                width={1024}
+                height={1536}
+                fetchPriority="high"
+                className="w-full h-auto rounded-[20px]"
+              />
+            </div>
           </div>
         </div>
-        <div className="temple-border" aria-hidden="true" />
+        <div className="zari" aria-hidden="true" />
       </section>
 
-      {/* ───────────── POINT OF VIEW ───────────── */}
-      <section className="section bg-paper">
+      {/* ───────────── 4. COLLECTIONS ───────────── */}
+      <section id="collections" className="section bg-ivory">
         <div className="shell">
-          <div className="grid grid-cols-1 lg:grid-cols-[28%_1fr] gap-10 lg:gap-[6%]">
-            <div className="flex flex-col justify-between gap-8 py-2">
-              <p data-reveal="label" className="section-label">
-                <span />
-                Our point of view
-              </p>
-              <p data-reveal className="micro text-ink-muted hidden lg:block" style={d(120)}>
-                Est. in Guntur, Andhra Pradesh
-              </p>
-            </div>
-            <div>
-              <h2
-                data-reveal
-                className="text-[clamp(42px,4.8vw,76px)] leading-[1.06] tracking-[-0.048em] text-ink [text-wrap:balance]"
+          <SectionHead
+            eyebrow="The collections"
+            title={<>Five weaves. <em>One you.</em></>}
+            text="From featherlight mul cotton for sunlit mornings to lustrous semi pattu for the days you will remember."
+            link={{ href: "/collections", label: "View all collections" }}
+          />
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 md:gap-5">
+            {COLLECTIONS.map((c, i) => (
+              <Link
+                key={c.id}
+                href={`/shop?collection=${c.slug}`}
+                className={`card woven group flex flex-col hover:-translate-y-1 ${i === 0 ? "col-span-2 lg:col-span-1" : ""}`}
               >
-                Tradition. Comfort. <em>Grace.</em> A saree should feel like it was always yours.
-              </h2>
-              <p data-reveal className="lede max-w-[440px] mt-8 lg:ml-auto" style={d(120)}>
-                We begin with the woman, not the shelf — the occasion, the colours she loves, how she wants
-                to move. Then we find the weave that fits.
-              </p>
-            </div>
-          </div>
-
-          <div className="relative mt-16 lg:mt-20">
-            <div data-reveal="rule" className="rule absolute top-0 inset-x-0" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-              {PROMISES.map((p, i) => (
-                <div
-                  key={p.title}
-                  data-reveal
-                  style={d(120 + i * 110)}
-                  className={`pt-7 pb-8 sm:pr-8 ${i > 0 ? "lg:pl-8 lg:border-l lg:border-line/70" : ""} ${
-                    i % 2 === 1 ? "sm:pl-8 sm:border-l sm:border-line/70 lg:border-l" : ""
-                  } border-b border-line/70 lg:border-b-0`}
-                >
-                  <div className="flex items-baseline gap-5">
-                    <span className="micro text-ink-muted">{String(i + 1).padStart(2, "0")}</span>
-                    <h3 className="text-[clamp(24px,2vw,32px)] tracking-[-0.03em]">{p.title}</h3>
-                  </div>
-                  <p className="mt-3 pl-10 text-[14px] leading-[1.75] text-ink-muted">{p.text}</p>
+                <div className="relative aspect-[4/5] overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={c.image}
+                    alt={`${c.name} at Aliveli Vasthralaya`}
+                    width={800}
+                    height={1000}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover object-[50%_20%] transition-transform duration-700 group-hover:scale-[1.04]"
+                  />
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ───────────── COLLECTIONS RAIL ───────────── */}
-      <section id="collections" className="section bg-ivory overflow-hidden">
-        <div className="shell grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-[8%] items-end mb-14">
-          <div>
-            <p data-reveal="label" className="section-label">
-              <span />
-              The collections
-            </p>
-            <h2 data-reveal style={d(80)} className="display-lg mt-8 text-ink">
-              Five weaves. <em>One you.</em>
-            </h2>
-          </div>
-          <div data-reveal style={d(160)}>
-            <p className="lede max-w-[420px]">
-              From featherlight mul cotton for sunlit mornings to lustrous semi pattu for the days you will
-              remember — each collection is gathered for how it drapes, not just how it looks.
-            </p>
-            <Link href="/collections" className="text-link mt-5">
-              View all collections
-              <ArrowRight className="w-4 h-4 stroke-[1.4]" />
-            </Link>
-          </div>
-        </div>
-        <CollectionRail collections={COLLECTIONS} />
-      </section>
-
-      {/* ───────────── SIGNATURE PIECES ───────────── */}
-      <section id="signature" className="section bg-paper">
-        <div className="shell">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-[8%] items-end">
-            <div>
-              <p data-reveal="label" className="section-label">
-                <span />
-                Signature pieces
-              </p>
-              <h2 data-reveal style={d(80)} className="display-lg mt-8 text-ink">
-                Chosen once. <em>Worn forever.</em>
-              </h2>
-            </div>
-            <div data-reveal style={d(160)}>
-              <p className="lede max-w-[420px]">
-                A few pieces we keep coming back to. Sample listings are shown while live inventory is
-                being added.
-              </p>
-              <Link href="/shop" className="text-link mt-5">
-                Shop the full catalogue
-                <ArrowRight className="w-4 h-4 stroke-[1.4]" />
+                <div className="zari" aria-hidden="true" />
+                <div className="p-4 md:p-5 flex-1 flex flex-col">
+                  <h3 className="font-serif text-[20px] md:text-[22px] leading-tight text-ink group-hover:text-maroon transition-colors">
+                    {c.name.replace(" Sarees", "")}
+                  </h3>
+                  <p className="mt-1.5 text-[14px] leading-[1.55] text-ink-muted">{COLLECTION_LINES[c.slug]}</p>
+                  <span className="mt-auto pt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-maroon">
+                    Shop now <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                  </span>
+                </div>
               </Link>
-            </div>
-          </div>
-
-          <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-14">
-            {featured.map((product, i) => (
-              <div
-                key={product.id}
-                data-reveal
-                style={d(i * 120)}
-                className={i % 2 === 1 ? "lg:mt-20" : ""}
-              >
-                <ProductCard product={product} index={i} />
-              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ───────────── OCCASIONS ───────────── */}
-      <section id="occasions" className="section bg-ivory">
-        <div className="shell grid grid-cols-1 lg:grid-cols-[30%_1fr] gap-12 lg:gap-[6%]">
-          <div className="lg:sticky lg:top-[calc(var(--header-height)+40px)] self-start">
-            <p data-reveal="label" className="section-label">
-              <span />
-              Draped for every moment
-            </p>
-            <h2 data-reveal style={d(80)} className="text-[clamp(44px,4.6vw,74px)] leading-[1.02] tracking-[-0.048em] mt-8">
-              For the day, <em>and the occasion.</em>
-            </h2>
-            <p data-reveal style={d(160)} className="lede mt-7 max-w-[320px]">
-              Weddings, festivals, rituals, and the quieter everyday — find the silhouette that suits the
-              moment.
-            </p>
-            <p data-reveal style={d(220)} className="micro text-ink-muted mt-8">
-              Wedding · Festive · Traditional · Everyday · Evening
-            </p>
+      {/* ───────────── 5. SIGNATURE PIECES ───────────── */}
+      <section id="signature" className="section bg-paper">
+        <div className="shell">
+          <SectionHead
+            eyebrow="Signature pieces"
+            title={<>Chosen once. <em>Worn forever.</em></>}
+            text="A few pieces we keep coming back to. Sample listings are shown while live inventory is being added."
+            link={{ href: "/shop", label: "Shop the full catalogue" }}
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+            {featured.map((product, i) => (
+              <ProductCard key={product.id} product={product} index={i} />
+            ))}
           </div>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-2 gap-4 sm:gap-6">
+      {/* ───────────── 6. SHOP BY OCCASION ───────────── */}
+      <section id="occasions" className="section bg-ivory">
+        <div className="shell">
+          <SectionHead
+            eyebrow="Shop by occasion"
+            title={<>For the day, <em>and the occasion.</em></>}
+            text="Weddings, festivals, rituals and the quieter everyday — find the drape that suits the moment."
+          />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-5">
             {OCCASIONS.map((o, i) => (
               <Link
                 key={o.id}
                 href={`/shop?occasion=${o.slug}`}
-                className={`group relative block ${i === 0 ? "col-span-2" : ""} ${i === 2 || i === 4 ? "sm:mt-16" : ""}`}
+                className={`group relative block overflow-hidden rounded-[20px] border border-line bg-paper hover:shadow-[0_22px_40px_-26px_rgba(58,13,20,0.45)] transition-shadow ${
+                  i === 0 ? "col-span-2 md:col-span-1" : ""
+                }`}
               >
-                <div
-                  data-reveal="curtain"
-                  style={d(i * 90)}
-                  className={`relative overflow-hidden bg-ivory-deep zoom ${i === 0 ? "aspect-[16/10]" : "aspect-[4/5]"}`}
-                >
+                <div className={`relative ${i === 0 ? "aspect-[16/11] md:aspect-[3/4]" : "aspect-[3/4]"}`}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={o.image} alt={o.name} loading="lazy" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  <p className="hover-caption absolute left-5 right-5 bottom-5 text-paper text-[14px] leading-snug">
-                    {o.description}
-                  </p>
-                </div>
-                <div className="pt-4 flex items-baseline justify-between gap-4">
-                  <div className="flex items-baseline gap-4">
-                    <span className="micro text-ink-muted">{String(i + 1).padStart(2, "0")}</span>
-                    <h3 className="text-[clamp(20px,1.8vw,28px)] tracking-[-0.03em] group-hover:text-maroon transition-colors">
+                  <img
+                    src={o.image}
+                    alt={`${o.name} sarees`}
+                    width={800}
+                    height={1066}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 w-full h-full object-cover object-[50%_25%] transition-transform duration-700 group-hover:scale-[1.04]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#3a0d14]/85 via-[#3a0d14]/15 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 text-paper">
+                    <p className="text-[11.5px] font-semibold tracking-[0.14em] uppercase text-sand/90">{o.subtitle}</p>
+                    <h3 className="font-serif text-[22px] md:text-[24px] leading-tight mt-1 flex items-center gap-2">
                       {o.name}
+                      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
                     </h3>
                   </div>
-                  {i === 0 && <span className="micro text-ink-muted hidden sm:inline">{o.subtitle}</span>}
                 </div>
               </Link>
             ))}
@@ -285,161 +234,144 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ───────────── CLIENT STORIES ───────────── */}
-      <section id="stories" className="bg-paper py-[clamp(80px,7vw,120px)]">
-        <div className="shell">
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)] gap-x-[9%] gap-y-8 mb-14">
-            <div>
-              <p data-reveal="label" className="section-label">
-                <span />
-                Client stories
-              </p>
-              <h2 data-reveal style={d(80)} className="mt-8 text-[clamp(50px,5.9vw,92px)] leading-[1.02] tracking-[-0.045em]">
-                Draped by her. <em>Remembered</em> by her.
-              </h2>
-              <p data-reveal style={d(160)} className="mt-6 text-[13px] tracking-[0.1em] text-ink-muted">
-                Real women. Real occasions. A little more grace.
-              </p>
-            </div>
-            <div data-reveal style={d(200)} className="self-end">
-              <p className="micro text-ink-muted border-l border-line pl-5 max-w-[300px]">
-                Placeholder stories shown — replace with genuine reviews from Aliveli Vasthralaya clients.
-              </p>
-            </div>
-          </div>
-          <div data-reveal style={d(120)}>
-            <TestimonialSlider />
-          </div>
-          <p data-reveal className="micro text-ink-muted mt-14 ml-auto w-fit relative pb-4 after:absolute after:left-0 after:bottom-0 after:w-10 after:h-px after:bg-ink-muted">
-            Different women. Same feeling.
-          </p>
-        </div>
-      </section>
-
-      {/* ───────────── ABOUT (DARK) ───────────── */}
-      <section className="section bg-dark text-paper overflow-hidden">
-        <div className="shell grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-[8%] items-center">
-          <div data-reveal="curtain" className="relative aspect-[4/5] overflow-hidden order-1 lg:order-none">
+      {/* ───────────── 7. STORY ───────────── */}
+      <section id="stories" className="section bg-paper">
+        <div className="shell grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-10 lg:gap-16 items-center">
+          <div className="gold-frame max-w-[460px] w-full justify-self-center lg:justify-self-start">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/images/aliveli-portrait.png"
+              src="/images/aliveli-portrait.webp"
               alt="Woman in a deep plum saree with an embroidered blouse and gold temple jewellery"
+              width={630}
+              height={1130}
               loading="lazy"
-              className="w-full h-full object-cover object-[50%_68%]"
+              decoding="async"
+              className="w-full aspect-[4/5] object-cover object-[50%_35%] rounded-[20px]"
             />
           </div>
           <div>
-            <p data-reveal="label" className="section-label !text-sand">
-              <span />
-              The Aliveli way
-            </p>
-            <h2 data-reveal style={d(80)} className="mt-8 mb-8 text-[clamp(46px,5vw,78px)] leading-[1] tracking-[-0.048em] [&_em]:text-rose">
-              Choosing a saree begins with <em>listening.</em>
-            </h2>
-            <div data-reveal style={d(160)} className="space-y-4 max-w-[440px] text-[16px] leading-[1.85] text-[#ded2c8]">
-              <p>
-                At Aliveli Vasthralaya, every saree is an ode to Indian femininity — enduring cultural grace
-                met with thoughtful contemporary styling.
+            <p className="eyebrow">The Aliveli way</p>
+            <blockquote className="mt-5">
+              <p className="font-serif text-[clamp(28px,3.6vw,44px)] leading-[1.2] tracking-[-0.025em] text-ink">
+                “The right saree doesn’t change who you are. <em>It lets everyone see it.</em>”
               </p>
-              <p>
-                We believe choosing a saree should feel unhurried and personal, guided by attentive
-                assistance and a real love for the craft.
-              </p>
-            </div>
-            <blockquote data-reveal style={d(220)} className="mt-10 pl-6 border-l border-gold/40 font-serif italic text-[clamp(22px,2vw,28px)] leading-[1.3] tracking-[-0.02em] text-[#eadfd5] max-w-[460px]">
-              “The right saree doesn’t change who you are. It lets everyone see it.”
             </blockquote>
-            <div data-reveal style={d(280)} className="mt-8 flex flex-wrap gap-x-8 items-center">
-              <Link href="/about" className="text-link !text-paper">
-                Read our story
-                <ArrowRight className="w-4 h-4 stroke-[1.4]" />
-              </Link>
-              <Link href="/contact" className="quiet-link text-sand">
-                Visit the Guntur boutique
-              </Link>
+            <p className="mt-6 text-[17px] leading-[1.75] text-ink-muted max-w-[560px]">
+              At Aliveli Vasthralaya, every saree is an ode to Indian femininity — enduring cultural grace met
+              with thoughtful contemporary styling. Choosing a saree should feel unhurried and personal.
+            </p>
+
+            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {VALUES.map(({ icon: Icon, title, text }) => (
+                <div key={title} className="rounded-[20px] border border-line bg-paper p-5">
+                  <span className="w-10 h-10 rounded-full bg-ivory border border-gold/60 flex items-center justify-center text-maroon">
+                    <Icon className="w-[18px] h-[18px]" aria-hidden="true" />
+                  </span>
+                  <h3 className="font-serif text-[20px] mt-3 text-ink">{title}</h3>
+                  <p className="mt-1 text-[14.5px] leading-[1.6] text-ink-muted">{text}</p>
+                </div>
+              ))}
             </div>
+
+            <Link href="/about" className="btn-ghost mt-8">
+              Read our story
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* ───────────── LOOKBOOK MARQUEE ───────────── */}
-      <section id="instagram-gallery" className="pt-[var(--space)] pb-12 bg-paper overflow-hidden">
-        <div className="shell flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div>
-            <p data-reveal="label" className="section-label">
-              <span />
-              Off the shelf
-            </p>
-            <h2 data-reveal style={d(80)} className="display-md mt-7">
-              Styled in <em>grace.</em>
-            </h2>
-          </div>
-          <div data-reveal style={d(160)}>
+      {/* ───────────── 8. GALLERY ───────────── */}
+      <section id="instagram-gallery" className="section bg-ivory">
+        <div className="shell">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+            <div>
+              <p className="eyebrow">Styled in grace</p>
+              <h2 className="h-section mt-4 text-ink">
+                From our <em>gallery.</em>
+              </h2>
+            </div>
             {BRAND_CONFIG.instagramUrl ? (
-              <a href={BRAND_CONFIG.instagramUrl} target="_blank" rel="noopener noreferrer" className="text-link">
+              <a href={BRAND_CONFIG.instagramUrl} target="_blank" rel="noopener noreferrer" className="btn-ghost self-start">
+                <Instagram className="w-4 h-4" aria-hidden="true" />
                 Follow {BRAND_CONFIG.instagramHandle}
-                <ArrowRight className="w-4 h-4 stroke-[1.4]" />
               </a>
             ) : (
-              <span className="micro text-ink-muted">{BRAND_CONFIG.instagramHandle}</span>
+              <p className="inline-flex items-center gap-2 text-[15px] font-semibold text-maroon">
+                <Instagram className="w-4 h-4" aria-hidden="true" />
+                {BRAND_CONFIG.instagramHandle}
+              </p>
             )}
           </div>
-        </div>
-
-        <div className="marquee" style={{ ["--marquee-duration" as string]: "60s" }}>
-          {[false, true].map((dup) => (
-            <div key={String(dup)} className="marquee__track gap-5 pr-5" aria-hidden={dup || undefined}>
-              {INSTAGRAM_GALLERY_ITEMS.map((item) => (
-                <figure key={item.id + String(dup)} className="group shrink-0 w-[62vw] sm:w-[34vw] lg:w-[22vw]">
-                  <div className="aspect-[4/5] overflow-hidden zoom bg-ivory-deep">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={item.image} alt={dup ? "" : item.caption} loading="lazy" className="w-full h-full object-cover" />
-                  </div>
-                  <figcaption className="pt-3 flex justify-between gap-4">
-                    <span className="font-serif italic text-[16px] text-ink/80 truncate">{item.caption}</span>
-                    <span className="micro text-ink-muted shrink-0">{item.collection}</span>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
-          ))}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
+            {INSTAGRAM_GALLERY_ITEMS.map((item) => (
+              <figure key={item.id} className="group relative overflow-hidden rounded-[20px] border border-line aspect-square bg-paper">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={item.image}
+                  alt={item.caption}
+                  width={600}
+                  height={600}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover object-[50%_25%] transition-transform duration-700 group-hover:scale-[1.05]"
+                />
+                <figcaption className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-[#3a0d14]/80 to-transparent text-paper text-[12.5px] leading-snug opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
+                  {item.caption}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ───────────── CONTACT ───────────── */}
+      {/* ───────────── 9. REVIEWS (only real reviews; hidden until added) ───────────── */}
+      {reviews.length > 0 && (
+        <section id="reviews" className="section bg-paper">
+          <div className="shell">
+            <SectionHead eyebrow="Customer reviews" title={<>Draped by her. <em>Remembered by her.</em></>} />
+            <TestimonialSlider items={reviews} />
+          </div>
+          <div className="shell mt-[var(--space)]">
+            <div className="zari" aria-hidden="true" />
+          </div>
+        </section>
+      )}
+
+      {/* ───────────── 10. VISIT & ENQUIRE ───────────── */}
       <ContactEnquirySection />
 
-      {/* ───────────── FAQ ───────────── */}
-      <section className="bg-paper pb-[var(--space)]">
-        <div className="shell">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-10 lg:gap-[8%] pt-[clamp(48px,4.5vw,72px)] border-t border-line">
-            <div>
-              <p data-reveal="label" className="section-label">
-                <span />
-                Good to know
-              </p>
-              <h3 data-reveal style={d(80)} className="mt-7 text-[clamp(34px,3.2vw,52px)] leading-[1.08] tracking-[-0.04em]">
-                A saree boutique in <em>Guntur,</em> Andhra Pradesh.
-              </h3>
-              <a href={whatsapp} target="_blank" rel="noopener noreferrer" data-reveal style={d(160)} className="text-link mt-6">
-                Ask us anything
-                <ArrowRight className="w-4 h-4 stroke-[1.4]" />
-              </a>
-            </div>
-            <div data-reveal style={d(120)}>
-              {FAQS.map((f, i) => (
-                <details key={f.q} className="faq-item border-b border-line first:border-t">
-                  <summary className="grid grid-cols-[32px_1fr_18px] items-center gap-3.5 min-h-[64px] py-4">
-                    <span className="micro text-ink-muted">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="faq-q font-serif text-[clamp(19px,1.5vw,23px)] leading-[1.3] tracking-[-0.015em] transition-colors">
-                      {f.q}
-                    </span>
-                    <span className="faq-mark" aria-hidden="true" />
-                  </summary>
-                  <p className="faq-answer max-w-[620px] pb-6 pl-[46px] text-[15px] leading-[1.8] text-ink-muted">{f.a}</p>
-                </details>
-              ))}
-            </div>
+      {/* ───────────── 11. FAQ ───────────── */}
+      <section className="section bg-ivory">
+        <div className="shell grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-10 lg:gap-16">
+          <div>
+            <p className="eyebrow">Good to know</p>
+            <h2 className="h-section mt-4 text-ink">
+              Questions, <em>answered.</em>
+            </h2>
+            <p className="mt-4 text-[17px] leading-[1.7] text-ink-muted max-w-[380px]">
+              Anything else? Ask us on WhatsApp and we will help.
+            </p>
+            <a
+              href={buildWhatsAppEnquiryUrl("Hello Aliveli Vasthralaya, I have a question about your sarees.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-solid mt-6"
+            >
+              Ask on WhatsApp
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </a>
+          </div>
+          <div className="space-y-3">
+            {FAQS.map((f) => (
+              <details key={f.q} className="faq-item group rounded-[20px] border border-line bg-paper open:shadow-[0_18px_36px_-28px_rgba(58,13,20,0.45)]">
+                <summary className="flex items-center justify-between gap-4 min-h-[64px] px-5 sm:px-6 py-4">
+                  <span className="faq-q font-serif text-[18px] sm:text-[20px] leading-[1.35] text-ink transition-colors">{f.q}</span>
+                  <span className="faq-mark" aria-hidden="true" />
+                </summary>
+                <p className="faq-answer px-5 sm:px-6 pb-5 text-[15.5px] leading-[1.75] text-ink-muted max-w-[640px]">{f.a}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>

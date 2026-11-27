@@ -1,31 +1,27 @@
 import React from "react";
+import { buildWhatsAppEnquiryUrl } from "@/lib/brand";
 
-const MESSAGES = [
-  "Celebrating Indian elegance",
-  "Mul Cotton · Georgette · Semi Pattu · Designer · Work",
-  "Visit our boutique in Guntur",
-  "Enquire personally on WhatsApp",
-];
-
-/** Slim dark ticker — loops a quiet line of brand messages. */
+/** Slim maroon strip with a single, static brand message. */
 export function AnnouncementBar() {
-  const row = (hidden: boolean) => (
-    <div className="marquee__track" aria-hidden={hidden || undefined}>
-      {[...MESSAGES, ...MESSAGES].map((msg, i) => (
-        <span key={i} className="micro flex items-center gap-8 pr-8 whitespace-nowrap">
-          {msg}
-          <span className="inline-block w-1 h-1 rounded-full bg-rose/70" />
-        </span>
-      ))}
-    </div>
+  const whatsapp = buildWhatsAppEnquiryUrl(
+    "Hello Aliveli Vasthralaya, I would like to enquire about your sarees."
   );
 
   return (
-    <div className="bg-dark text-sand h-9 flex items-center">
-      <div className="marquee w-full" style={{ ["--marquee-duration" as string]: "48s" }}>
-        {row(false)}
-        {row(true)}
-      </div>
+    <div className="bg-dark text-paper">
+      <p className="shell min-h-9 py-2 flex items-center justify-center text-center text-[12.5px] leading-snug tracking-[0.02em]">
+        <span>
+          Visit our Guntur boutique or{" "}
+          <a
+            href={whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-gold underline-offset-4 hover:decoration-paper"
+          >
+            enquire personally on WhatsApp
+          </a>
+        </span>
+      </p>
     </div>
   );
 }

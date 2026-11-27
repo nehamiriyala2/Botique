@@ -1,9 +1,14 @@
 import React from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { MessageCircle, MapPin, Phone } from "lucide-react";
 import { BrandLogo } from "@/components/BrandLogo";
 import { COLLECTIONS } from "@/data/catalog";
-import { BRAND_CONFIG, buildWhatsAppEnquiryUrl } from "@/lib/brand";
+import {
+  BRAND_CONFIG,
+  buildGoogleMapsDirectionsUrl,
+  buildPhoneUrl,
+  buildWhatsAppEnquiryUrl,
+} from "@/lib/brand";
 
 const NAV = [
   { label: "Shop", href: "/shop" },
@@ -12,6 +17,7 @@ const NAV = [
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
   { label: "Bag", href: "/cart" },
+  { label: "Account", href: "/account" },
 ];
 
 const POLICIES = [
@@ -21,41 +27,38 @@ const POLICIES = [
   { label: "Returns", href: "/policies/returns" },
 ];
 
+const heading = "text-[12px] font-semibold tracking-[0.16em] uppercase text-gold mb-5";
+const link = "text-[15px] text-paper/85 hover:text-paper underline-offset-4 hover:underline decoration-gold";
+
 export function Footer() {
   const year = new Date().getFullYear();
   const whatsappUrl = buildWhatsAppEnquiryUrl(
     "Hello Aliveli Vasthralaya, I would like to enquire about your saree collections."
   );
+  const phoneUrl = buildPhoneUrl();
 
   return (
-    <footer className="bg-dark text-paper pt-[clamp(70px,8vw,130px)] pb-6 overflow-hidden">
-      <div className="shell">
-        <p
-          data-reveal
-          className="font-serif text-[clamp(54px,9.6vw,172px)] leading-[0.98] tracking-[-0.055em] text-[#eadfd5] mb-[clamp(48px,6vw,96px)]"
-        >
-          Celebrating Indian <em className="!text-rose">elegance.</em>
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr_1fr] gap-12 pb-12 border-b border-gold/40">
-          <div className="space-y-6">
-            <BrandLogo variant="light" />
-            <p className="micro text-sand max-w-[260px]">Saree boutique · Guntur, Andhra Pradesh</p>
-            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-link !text-paper min-w-[220px]">
-              WhatsApp the boutique
-              <ArrowUpRight className="w-4 h-4 stroke-[1.4]" />
+    <footer className="bg-dark text-paper">
+      <div className="zari" aria-hidden="true" />
+      <div className="shell pt-16 pb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] gap-12">
+          <div className="space-y-5">
+            <BrandLogo variant="light" compact />
+            <p className="font-serif italic text-[22px] leading-snug text-paper/90 max-w-[300px]">
+              Celebrating Indian elegance.
+            </p>
+            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2.5 min-h-[46px] px-5 rounded-full border-[1.5px] border-gold text-paper text-[13px] font-semibold hover:bg-paper hover:text-maroon hover:border-paper transition-colors">
+              <MessageCircle className="w-4 h-4" aria-hidden="true" />
+              Enquire on WhatsApp
             </a>
           </div>
 
           <div>
-            <p className="micro text-sand mb-5">Collections</p>
-            <ul className="space-y-2.5">
+            <p className={heading}>Collections</p>
+            <ul className="space-y-3">
               {COLLECTIONS.map((c) => (
                 <li key={c.id}>
-                  <Link
-                    href={`/shop?collection=${c.slug}`}
-                    className="font-serif text-[20px] tracking-[-0.02em] text-[#eadfd5] hover:text-rose transition-colors"
-                  >
+                  <Link href={`/shop?collection=${c.slug}`} className={link}>
                     {c.name}
                   </Link>
                 </li>
@@ -64,46 +67,57 @@ export function Footer() {
           </div>
 
           <div>
-            <p className="micro text-sand mb-5">Visit</p>
-            <address className="not-italic text-[14px] leading-[1.8] text-[#ded2c8]">
-              {BRAND_CONFIG.address.line1}
-              <br />
-              {BRAND_CONFIG.address.line2} {BRAND_CONFIG.address.city}
-              <br />
-              {BRAND_CONFIG.address.statePin}
+            <p className={heading}>Explore</p>
+            <ul className="space-y-3">
+              {NAV.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className={link}>
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className={heading}>Visit the boutique</p>
+            <address className="not-italic text-[15px] leading-[1.75] text-paper/85 flex gap-3">
+              <MapPin className="w-4 h-4 mt-1 shrink-0 text-gold" aria-hidden="true" />
+              <span>
+                {BRAND_CONFIG.address.line1}
+                <br />
+                {BRAND_CONFIG.address.line2} {BRAND_CONFIG.address.city}
+                <br />
+                {BRAND_CONFIG.address.statePin}
+              </span>
             </address>
-            <p className="mt-4 text-[14px] text-[#ded2c8]">{BRAND_CONFIG.phonePlaceholder}</p>
-            {BRAND_CONFIG.instagramUrl && (
-              <a href={BRAND_CONFIG.instagramUrl} target="_blank" rel="noopener noreferrer" className="quiet-link text-sand">
-                {BRAND_CONFIG.instagramHandle}
-              </a>
-            )}
+            <a href={buildGoogleMapsDirectionsUrl()} target="_blank" rel="noopener noreferrer" className={`${link} inline-block mt-3 ml-7`}>
+              Get directions
+            </a>
+            <p className="mt-4 text-[15px] text-paper/85 flex gap-3 items-center">
+              <Phone className="w-4 h-4 shrink-0 text-gold" aria-hidden="true" />
+              {phoneUrl ? (
+                <a href={phoneUrl} className={link}>
+                  {BRAND_CONFIG.phone}
+                </a>
+              ) : (
+                <span className="italic text-paper/70">{BRAND_CONFIG.phonePlaceholder}</span>
+              )}
+            </p>
           </div>
         </div>
 
-        <nav aria-label="Footer" className="flex flex-wrap gap-x-7 gap-y-1 py-6 border-b border-gold/40">
-          {NAV.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="min-h-[44px] inline-flex items-center text-[11px] font-semibold tracking-[0.12em] uppercase text-paper/90 hover:text-rose transition-colors"
-            >
-              {l.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-5 text-[10px] tracking-[0.06em] text-sand">
+        <div className="mt-14 pt-6 border-t border-gold/40 flex flex-col md:flex-row md:items-center justify-between gap-4 text-[13px] text-paper/75">
           <p>
             © {year} {BRAND_CONFIG.shortName}. All rights reserved.
           </p>
-          <div className="flex flex-wrap gap-x-6">
+          <nav aria-label="Policies" className="flex flex-wrap gap-x-6 gap-y-1">
             {POLICIES.map((p) => (
-              <Link key={p.href} href={p.href} className="min-h-[36px] inline-flex items-center hover:text-paper transition-colors">
+              <Link key={p.href} href={p.href} className="min-h-[36px] inline-flex items-center hover:text-paper hover:underline underline-offset-4 decoration-gold">
                 {p.label}
               </Link>
             ))}
-          </div>
+          </nav>
         </div>
       </div>
     </footer>

@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://alivelivasthralaya.example/sitemap.xml",
+    sitemap: "https://botique-mocha.vercel.app/sitemap.xml",
   };
 }

@@ -25,7 +25,7 @@ export default function AboutPage() {
             <div className="relative aspect-[4/5] border border-gold/35 bg-white overflow-hidden shadow-md">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/images/brand-story.jpg"
+                src="/images/saree-mul-cotton-1.webp"
                 alt="Aliveli Vasthralaya — Celebrating Indian Elegance"
                 className="w-full h-full object-cover"
               />

@@ -3,7 +3,9 @@ export const BRAND_CONFIG = {
   shortName: "Aliveli Vasthralaya",
   tagline: "CELEBRATING INDIAN ELEGANCE",
   email: "enquiries@alivelivasthralaya.example", // Replace with official store email
-  phonePlaceholder: "+91 [Store Phone Pending]",
+  siteUrl: "https://botique-mocha.vercel.app",
+  phone: "", // Real store number, e.g. "+91 98XXXXXXXX" — shown on call links once set
+  phonePlaceholder: "Store phone number coming soon",
   whatsappNumber: "", // Add digits with country code (e.g., "919XXXXXXXXX") once confirmed
   instagramUrl: "", // Add official Instagram profile URL once supplied
   instagramHandle: "@alivelivasthralaya",
@@ -15,7 +17,7 @@ export const BRAND_CONFIG = {
     full: "122-03/1, Ice Factory Road, Ratnagar Nagar, Guntur, Andhra Pradesh – 522006, India.",
   },
   storeHours: "Store hours to be updated",
-  logoOverridePath: "/images/aliveli-logo-full.jpg", // Official full logo (crest + wordmark on emerald)
+  logoOverridePath: "/images/aliveli-logo-full.webp", // Official full logo (crest + wordmark on emerald)
   crestPath: "/images/aliveli-crest.png", // Round "AV" peacock-feather crest
   wordmarkPath: "/images/aliveli-wordmark.png", // Gold "ALIVELI VASTHRALAYA" wordmark (for dark backgrounds)
 } as const;
@@ -26,6 +28,12 @@ export function buildWhatsAppEnquiryUrl(message: string): string {
     return `https://wa.me/${BRAND_CONFIG.whatsappNumber}?text=${encoded}`;
   }
   return `https://wa.me/?text=${encoded}`;
+}
+
+/** tel: link for the store phone, or null while the number is pending. */
+export function buildPhoneUrl(): string | null {
+  const digits = BRAND_CONFIG.phone.replace(/[^\d+]/g, "");
+  return digits ? `tel:${digits}` : null;
 }
 
 export function buildGoogleMapsDirectionsUrl(): string {

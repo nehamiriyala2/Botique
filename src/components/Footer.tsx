@@ -37,7 +37,7 @@ export function Footer() {
           Celebrating Indian <em className="!text-rose">elegance.</em>
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr_1fr] gap-12 pb-12 border-b border-[#65464a]">
+        <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr_1fr] gap-12 pb-12 border-b border-gold/40">
           <div className="space-y-6">
             <BrandLogo variant="light" />
             <p className="micro text-sand max-w-[260px]">Saree boutique · Guntur, Andhra Pradesh</p>
@@ -81,7 +81,7 @@ export function Footer() {
           </div>
         </div>
 
-        <nav aria-label="Footer" className="flex flex-wrap gap-x-7 gap-y-1 py-6 border-b border-[#65464a]">
+        <nav aria-label="Footer" className="flex flex-wrap gap-x-7 gap-y-1 py-6 border-b border-gold/40">
           {NAV.map((l) => (
             <Link
               key={l.href}

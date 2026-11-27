@@ -5,21 +5,27 @@
    (legacy token names kept so every existing page inherits the new look)
 ------------------------------------------------------------------- */
 @theme inline {
-  --color-maroon: #641f2a;       /* wine — primary accent */
-  --color-maroon-dark: #2d1217;  /* deep wine — dark sections */
-  --color-maroon-soft: #7e3340;
-  --color-gold: #a88a68;         /* antique brass — quiet accent */
-  --color-gold-light: #d8c4b2;
-  --color-gold-muted: #8a7560;
-  --color-ivory: #f4efe7;
-  --color-ivory-deep: #ebe3d7;
-  --color-paper: #faf7f1;
-  --color-ink: #1b1715;
-  --color-ink-muted: #655b54;
-  --color-line: #bfb3a5;
-  --color-dark: #2d1217;
-  --color-rose: #d39b9e;
-  --color-sand: #cdb9ae;
+  /* Bright palette taken from the Aliveli crest: emerald, temple gold, crimson maroon, rani pink */
+  --color-maroon: #a3122f;       /* crimson maroon — primary accent */
+  --color-maroon-dark: #7a0c22;  /* deep crimson — button hover */
+  --color-maroon-soft: #c8284d;
+  --color-gold: #d9a21b;         /* temple gold */
+  --color-gold-light: #ffd66b;
+  --color-gold-muted: #a8790a;
+  --color-ivory: #fff4df;
+  --color-ivory-deep: #ffe6b8;
+  --color-paper: #fffaf0;
+  --color-ink: #1d1410;
+  --color-ink-muted: #5e4a3c;
+  --color-line: #e7c98c;
+  --color-dark: #0b4a2b;         /* emerald — dark sections (logo background) */
+  --color-emerald: #0f6b3c;
+  --color-emerald-bright: #18a05a;
+  --color-rani: #d81b74;         /* rani pink */
+  --color-saffron: #f58220;
+  --color-peacock: #0b8a8f;
+  --color-rose: #ffd66b;         /* accent on dark (emerald) sections */
+  --color-sand: #f4dca0;
   --font-serif: "Newsreader Variable", "Newsreader", Georgia, serif;
   --font-sans: "Manrope Variable", "Manrope", Arial, sans-serif;
 }
@@ -132,12 +138,13 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  color: var(--color-ink-muted);
+  color: var(--color-emerald);
+  font-weight: 700;
 }
 .section-label > span {
   width: 44px;
-  height: 1px;
-  background: currentColor;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-gold), var(--color-rani));
   flex-shrink: 0;
   transform-origin: left;
 }
@@ -199,7 +206,9 @@
   gap: 12px;
   min-height: 50px;
   padding: 0 28px;
-  background: var(--color-maroon);
+  border-radius: 9999px;
+  background: linear-gradient(100deg, var(--color-maroon), var(--color-rani));
+  box-shadow: 0 12px 24px -14px rgba(216, 27, 116, 0.7);
   color: var(--color-paper);
   font-size: 11px;
   font-weight: 600;
@@ -230,8 +239,9 @@
   gap: 12px;
   min-height: 50px;
   padding: 0 28px;
-  border: 1px solid var(--color-ink);
-  color: var(--color-ink);
+  border-radius: 9999px;
+  border: 1.5px solid var(--color-emerald);
+  color: var(--color-emerald);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.16em;
@@ -239,7 +249,7 @@
   transition: background 0.4s var(--ease), color 0.4s var(--ease);
 }
 .btn-ghost:hover {
-  background: var(--color-ink);
+  background: var(--color-emerald);
   color: var(--color-paper);
 }
 
@@ -508,9 +518,52 @@
   background: var(--color-paper);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(100, 31, 42, 0.3);
+  background: rgba(15, 107, 60, 0.35);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 31, 42, 0.55);
+  background: rgba(15, 107, 60, 0.6);
+}
+
+/* ------------------------------------------------------------------
+   Festive brights — hero, temple border, colour chips
+------------------------------------------------------------------- */
+.hero-festive {
+  background:
+    radial-gradient(circle at 78% 40%, rgba(255, 214, 107, 0.35), transparent 45%),
+    radial-gradient(circle at 10% 90%, rgba(216, 27, 116, 0.28), transparent 40%),
+    linear-gradient(135deg, #031f08 0%, #063a14 50%, #0b4a2b 100%);
+}
+.hero-festive em {
+  color: var(--color-gold-light);
+}
+/* Woven temple-border stripe (saree zari look) */
+.temple-border {
+  height: 14px;
+  background:
+    linear-gradient(135deg, var(--color-gold) 25%, transparent 25%) -7px 0 / 14px 14px,
+    linear-gradient(225deg, var(--color-gold) 25%, transparent 25%) -7px 0 / 14px 14px,
+    linear-gradient(315deg, var(--color-gold) 25%, transparent 25%) 0 0 / 14px 14px,
+    linear-gradient(45deg, var(--color-gold) 25%, transparent 25%) 0 0 / 14px 14px,
+    linear-gradient(90deg, var(--color-maroon), var(--color-rani), var(--color-maroon));
+}
+.logo-glow {
+  filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 40px rgba(255, 214, 107, 0.35));
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #fff;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.45);
 }

@@ -87,7 +87,7 @@ export function Header() {
   return (
     <>
       <header
-        className={`sticky top-0 z-40 bg-ivory border-b border-[#dcd2c6] transition-[transform,box-shadow] duration-[650ms] ease-[cubic-bezier(.22,1,.36,1)] ${
+        className={`sticky top-0 z-40 bg-ivory border-b border-gold/40 transition-[transform,box-shadow] duration-[650ms] ease-[cubic-bezier(.22,1,.36,1)] ${
           hidden && !searchOpen ? "-translate-y-[101%]" : "translate-y-0"
         } ${scrolled && !hidden ? "shadow-[0_14px_34px_-26px_rgba(45,18,23,0.45)]" : ""}`}
       >

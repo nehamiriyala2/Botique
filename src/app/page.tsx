@@ -18,6 +18,14 @@ const PROMISES = [
   { title: "Personal guidance", text: "Help with colours, fabrics and occasions in our Guntur store or on WhatsApp." },
 ];
 
+const SAREE_CHIPS = [
+  { slug: "mul-cotton", label: "Mul Cotton", color: "#0b8a8f" },
+  { slug: "georgette", label: "Georgette", color: "#d81b74" },
+  { slug: "semi-pattu", label: "Semi Pattu", color: "#c98a00" },
+  { slug: "designer", label: "Designer", color: "#a3122f" },
+  { slug: "work-sarees", label: "Work Sarees", color: "#f58220" },
+];
+
 const FAQS = [
   {
     q: "Where is Aliveli Vasthralaya?",
@@ -50,14 +58,14 @@ export default async function HomePage() {
   return (
     <>
       {/* ───────────── HERO ───────────── */}
-      <section className="relative bg-ivory overflow-hidden">
-        <div className="relative shell grid grid-cols-1 md:grid-cols-[1fr_auto] items-center gap-8 md:gap-[6%] py-8 md:py-14">
-          <div className="order-2 md:order-1 max-w-[560px] pb-6 md:py-6">
-            <p className="section-label hero-label hero-fade" style={{ ["--d" as string]: "0.15s" }}>
+      <section className="relative hero-festive text-paper overflow-hidden">
+        <div className="relative shell grid grid-cols-1 md:grid-cols-[1fr_auto] items-center gap-6 md:gap-[5%] py-8 md:py-12">
+          <div className="order-2 md:order-1 max-w-[580px] pb-8 md:py-6">
+            <p className="section-label hero-label hero-fade !text-gold-light" style={{ ["--d" as string]: "0.15s" }}>
               <span />
               Saree boutique · Guntur
             </p>
-            <h1 className="mt-7 mb-6 text-[clamp(52px,6.6vw,104px)] leading-[0.96] tracking-[-0.055em] text-ink">
+            <h1 className="mt-7 mb-6 text-[clamp(50px,6.4vw,100px)] leading-[0.96] tracking-[-0.055em] text-paper">
               <span className="hero-line">
                 <span style={{ ["--i" as string]: 0 }}>Elegance, woven</span>
               </span>
@@ -67,35 +75,43 @@ export default async function HomePage() {
                 </span>
               </span>
             </h1>
-            <p className="hero-fade lede max-w-[430px] !text-[#413932]" style={{ ["--d" as string]: "0.75s" }}>
+            <p className="hero-fade lede max-w-[440px] !text-[#f4e9cf]" style={{ ["--d" as string]: "0.75s" }}>
               Timeless sarees that celebrate the beauty, tradition and grace of Indian women — chosen with
               care, and offered with personal guidance.
             </p>
-            <div className="hero-fade mt-6 flex flex-wrap items-center gap-x-8 gap-y-2" style={{ ["--d" as string]: "0.9s" }}>
-              <Link href="/collections" className="text-link">
-                Explore the collections
-                <ArrowRight className="w-4 h-4 stroke-[1.4]" />
+            <div className="hero-fade mt-8 flex flex-wrap items-center gap-4" style={{ ["--d" as string]: "0.9s" }}>
+              <Link href="/collections" className="btn-solid">
+                Explore collections
+                <ArrowRight className="w-4 h-4 stroke-[1.6]" />
               </Link>
-              <Link href="/shop" className="quiet-link">
+              <Link
+                href="/shop"
+                className="inline-flex items-center min-h-[50px] px-7 rounded-full border-[1.5px] border-gold-light text-gold-light text-[11px] font-semibold tracking-[0.16em] uppercase hover:bg-gold-light hover:text-dark transition-colors"
+              >
                 Shop all sarees
               </Link>
             </div>
-            <p className="hero-fade micro text-ink-muted mt-8" style={{ ["--d" as string]: "1.05s" }}>
-              Mul Cotton · Georgette · Semi Pattu · Designer · Work
-            </p>
+            <div className="hero-fade mt-9 flex flex-wrap gap-2.5" style={{ ["--d" as string]: "1.05s" }}>
+              {SAREE_CHIPS.map((c) => (
+                <Link key={c.slug} href={`/shop?collection=${c.slug}`} className="chip" style={{ background: c.color }}>
+                  {c.label}
+                </Link>
+              ))}
+            </div>
           </div>
 
           <div className="order-1 md:order-2 justify-self-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/images/aliveli-poster.png"
-              alt="Aliveli Vastralaya poster: exclusive sarees, 2-piece and 3-piece sets, designer blouse customization, maggam work and computer embroidery, step-to-door service. Call 8977754414 or 9347492414."
-              width={1024}
-              height={1536}
-              className="hero-fade w-full max-w-[460px] md:w-auto md:max-h-[clamp(560px,calc(100svh-var(--header-height)-60px),820px)] h-auto object-contain shadow-[0_30px_60px_-30px_rgba(45,18,23,0.45)]"
+              src="/images/aliveli-logo-hero.webp"
+              alt="Aliveli Vasthralaya — Celebrating Indian Elegance"
+              width={760}
+              height={760}
+              className="hero-fade logo-glow w-full max-w-[380px] md:max-w-none md:w-[clamp(380px,38vw,600px)] h-auto"
             />
           </div>
         </div>
+        <div className="temple-border" aria-hidden="true" />
       </section>
 
       {/* ───────────── POINT OF VIEW ───────────── */}
@@ -330,7 +346,7 @@ export default async function HomePage() {
                 assistance and a real love for the craft.
               </p>
             </div>
-            <blockquote data-reveal style={d(220)} className="mt-10 pl-6 border-l border-[#65464a] font-serif italic text-[clamp(22px,2vw,28px)] leading-[1.3] tracking-[-0.02em] text-[#eadfd5] max-w-[460px]">
+            <blockquote data-reveal style={d(220)} className="mt-10 pl-6 border-l border-gold/40 font-serif italic text-[clamp(22px,2vw,28px)] leading-[1.3] tracking-[-0.02em] text-[#eadfd5] max-w-[460px]">
               “The right saree doesn’t change who you are. It lets everyone see it.”
             </blockquote>
             <div data-reveal style={d(280)} className="mt-8 flex flex-wrap gap-x-8 items-center">

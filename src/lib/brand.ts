@@ -15,7 +15,7 @@ export const BRAND_CONFIG = {
     full: "122-03/1, Ice Factory Road, Ratnagar Nagar, Guntur, Andhra Pradesh – 522006, India.",
   },
   storeHours: "Store hours to be updated",
-  logoOverridePath: "/images/aliveli-logo.png", // Full logo (crest + wordmark), transparent background
+  logoOverridePath: "/images/aliveli-logo-full.jpg", // Official full logo (crest + wordmark on emerald)
   crestPath: "/images/aliveli-crest.png", // Round "AV" peacock-feather crest
   wordmarkPath: "/images/aliveli-wordmark.png", // Gold "ALIVELI VASTHRALAYA" wordmark (for dark backgrounds)
 } as const;

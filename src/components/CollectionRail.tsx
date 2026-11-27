@@ -5,6 +5,8 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { SareeCollection } from "@/lib/db/schema";
 
+const RAIL_COLORS = ["#0b8a8f", "#d81b74", "#c98a00", "#a3122f", "#f58220"];
+
 /** Horizontally scrolling, snap-aligned collection cards with a live counter. */
 export function CollectionRail({ collections }: { collections: SareeCollection[] }) {
   const railRef = useRef<HTMLDivElement>(null);
@@ -61,7 +63,7 @@ export function CollectionRail({ collections }: { collections: SareeCollection[]
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={c.image} alt={c.name} loading="lazy" className="w-full h-full object-cover object-[50%_18%]" />
-              <span className="absolute top-4 left-4 micro bg-paper/90 px-2.5 py-1 text-ink">
+              <span className="absolute top-4 left-4 micro px-3 py-1 rounded-full text-paper font-bold shadow" style={{ background: RAIL_COLORS[i % RAIL_COLORS.length] }}>
                 {c.accentLabel}
               </span>
             </div>

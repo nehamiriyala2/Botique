@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ArrowRight, ArrowUpRight, Search, ShoppingBag, User, X } from "lucide-react";
+import { ArrowUpRight, MessageCircle, Search, ShoppingBag, User, X } from "lucide-react";
 import { BrandLogo } from "@/components/BrandLogo";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -28,18 +28,10 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const lastY = useRef(0);
 
-  // Shadow once scrolled; slide away on scroll-down, return on scroll-up.
+  // Soft shadow once the page is scrolled; the header itself always stays put.
   useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 12);
-      if (y > 320 && y > lastY.current + 4) setHidden(true);
-      else if (y < lastY.current - 4 || y < 320) setHidden(false);
-      lastY.current = y;
-    };
+    const onScroll = () => setScrolled(window.scrollY > 12);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -87,9 +79,9 @@ export function Header() {
   return (
     <>
       <header
-        className={`sticky top-0 z-40 bg-ivory border-b border-gold/40 transition-[transform,box-shadow] duration-[650ms] ease-[cubic-bezier(.22,1,.36,1)] ${
-          hidden && !searchOpen ? "-translate-y-[101%]" : "translate-y-0"
-        } ${scrolled && !hidden ? "shadow-[0_14px_34px_-26px_rgba(45,18,23,0.45)]" : ""}`}
+        className={`sticky top-0 z-40 bg-paper/95 backdrop-blur border-b border-line transition-shadow duration-300 ${
+          scrolled ? "shadow-[0_14px_34px_-26px_rgba(58,13,20,0.45)]" : ""
+        }`}
       >
         <div
           className="shell grid grid-cols-[1fr_auto] lg:grid-cols-[1fr_auto_1fr] items-center gap-6"
@@ -103,13 +95,13 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`group relative py-2 text-[11px] font-semibold tracking-[0.12em] uppercase transition-colors ${
+                className={`group relative py-2 text-[14px] font-medium transition-colors ${
                   isActive(link.href) ? "text-maroon" : "text-ink hover:text-maroon"
                 }`}
               >
                 {link.label}
                 <span
-                  className={`absolute left-0 right-0 bottom-0.5 h-px bg-current origin-left transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] ${
+                  className={`absolute left-0 right-0 bottom-0.5 h-[1.5px] bg-gold origin-left transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] ${
                     isActive(link.href) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                   }`}
                 />
@@ -156,16 +148,16 @@ export function Header() {
               href={enquireUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden xl:inline-flex items-center gap-4 ml-3 pl-6 border-l border-line min-h-[30px] text-[11px] font-semibold tracking-[0.12em] uppercase text-ink hover:text-maroon transition-colors group"
+              className="btn-solid hidden md:inline-flex !min-h-[42px] !px-5 ml-2"
             >
-              Enquire
-              <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+              <MessageCircle className="w-4 h-4 stroke-[1.8]" aria-hidden="true" />
+              Enquire on WhatsApp
             </a>
 
             <button
               type="button"
               onClick={() => setMenuOpen(true)}
-              className="lg:hidden inline-flex items-center gap-3 min-h-[44px] pl-3 text-[11px] tracking-[0.12em] uppercase font-semibold"
+              className="lg:hidden inline-flex items-center gap-3 min-h-[44px] pl-3 text-[13px] font-semibold"
               aria-label="Open menu"
               aria-expanded={menuOpen}
             >
@@ -277,6 +269,10 @@ export function Header() {
                 )
               )}
             </nav>
+            <a href={enquireUrl} target="_blank" rel="noopener noreferrer" className="btn-solid w-full mb-6">
+              <MessageCircle className="w-4 h-4 stroke-[1.8]" aria-hidden="true" />
+              Enquire on WhatsApp
+            </a>
             <div className="mt-auto flex items-center justify-between gap-4 text-[13px] text-ink-muted">
               <span>{BRAND_CONFIG.address.city.replace(",", "")}, Andhra Pradesh</span>
               <span>{BRAND_CONFIG.instagramHandle}</span>

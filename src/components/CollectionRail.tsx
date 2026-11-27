@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { SareeCollection } from "@/lib/db/schema";
 
-const RAIL_COLORS = ["#0b8a8f", "#d81b74", "#c98a00", "#a3122f", "#f58220"];
+const RAIL_COLORS = ["#7b1126", "#a3162f", "#7b1126", "#a3162f", "#7b1126"];
 
 /** Horizontally scrolling, snap-aligned collection cards with a live counter. */
 export function CollectionRail({ collections }: { collections: SareeCollection[] }) {

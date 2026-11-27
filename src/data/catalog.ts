@@ -13,7 +13,7 @@ export const COLLECTIONS: SareeCollection[] = [
     tagline: "Featherlight Everyday Grace",
     description:
       "Breathable, softly draped mul cotton sarees designed for effortless comfort and understated daytime elegance.",
-    image: "/images/col-mul-cotton.jpg",
+    image: "/images/saree-mul-cotton-2.webp",
     accentLabel: "Airy & Refined",
   },
   {
@@ -23,7 +23,7 @@ export const COLLECTIONS: SareeCollection[] = [
     tagline: "Fluid Drape & Modern Poise",
     description:
       "Gracefully cascading georgette silhouettes finished with delicate borders for contemporary celebrations and gatherings.",
-    image: "/images/col-georgette-red.jpg",
+    image: "/images/saree-georgette-2.webp",
     accentLabel: "Graceful Movement",
   },
   {
@@ -33,7 +33,7 @@ export const COLLECTIONS: SareeCollection[] = [
     tagline: "Lustrous Festive Heritage",
     description:
       "Richly woven semi pattu sarees celebrating traditional motifs, luminous borders, and festive splendor.",
-    image: "/images/col-semi-pattu-navy.jpg",
+    image: "/images/saree-semi-pattu-1.webp",
     accentLabel: "Festive Splendor",
   },
   {
@@ -43,7 +43,7 @@ export const COLLECTIONS: SareeCollection[] = [
     tagline: "Curated Statement Silhouettes",
     description:
       "Distinctive designer sarees pairing classic Indian draping with refined palettes and sculpted contemporary detailing.",
-    image: "/images/col-designer-wine.jpg",
+    image: "/images/saree-designer-1.webp",
     accentLabel: "Statement Edit",
   },
   {
@@ -53,7 +53,7 @@ export const COLLECTIONS: SareeCollection[] = [
     tagline: "Intricate Embellished Artistry",
     description:
       "Ornate work sarees featuring detailed border and pallu craftsmanship created for milestone celebrations and evening occasions.",
-    image: "/images/col-work-rust.jpg",
+    image: "/images/saree-work-2.webp",
     accentLabel: "Detailed Craft",
   },
 ];
@@ -66,7 +66,7 @@ export const OCCASIONS: OccasionCategory[] = [
     subtitle: "Bridal & Muhurtham Elegance",
     description:
       "Regal sarees curated for weddings, ceremonies, and cherished family milestones.",
-    image: "/images/occ-wedding.jpg",
+    image: "/images/saree-designer-2.webp",
   },
   {
     id: "occ-2",
@@ -75,7 +75,7 @@ export const OCCASIONS: OccasionCategory[] = [
     subtitle: "Celebratory Hues & Radiance",
     description:
       "Luminous silhouettes crafted to shine across pujas, festive evenings, and auspicious gatherings.",
-    image: "/images/occ-festive.jpg",
+    image: "/images/saree-georgette-1.webp",
   },
   {
     id: "occ-3",
@@ -84,7 +84,7 @@ export const OCCASIONS: OccasionCategory[] = [
     subtitle: "Rooted in Cultural Grace",
     description:
       "Timeless weaves and classic border compositions honoring enduring South Indian tradition.",
-    image: "/images/occ-traditional.jpg",
+    image: "/images/saree-semi-pattu-2.webp",
   },
   {
     id: "occ-4",
@@ -93,7 +93,7 @@ export const OCCASIONS: OccasionCategory[] = [
     subtitle: "Effortless Daytime Poise",
     description:
       "Soft, breathable drapes made for daily sophistication, workdays, and intimate lunches.",
-    image: "/images/occ-everyday.jpg",
+    image: "/images/saree-mul-cotton-3.webp",
   },
   {
     id: "occ-5",
@@ -102,7 +102,7 @@ export const OCCASIONS: OccasionCategory[] = [
     subtitle: "Receptions & Evening Soirees",
     description:
       "Statement sarees with refined shimmer and poised silhouettes for memorable evenings.",
-    image: "/images/occ-special.jpg",
+    image: "/images/saree-work-1.webp",
   },
 ];
 
@@ -110,303 +110,248 @@ export const OCCASIONS: OccasionCategory[] = [
  * SAMPLE PRODUCT CATALOG
  * ----------------------
  * Clearly marked sample catalog items intended for layout, filtering, cart,
- * and checkout verification. Replace this array (or connect a database via
- * `src/lib/db/repository.ts`) with actual Aliveli Vasthralaya inventory.
+ * and checkout verification. Photos are the boutique-supplied saree images.
+ * Replace this array (or connect a database via `src/lib/db/repository.ts`)
+ * with actual Aliveli Vasthralaya inventory. Items with `price: null` show
+ * "Price on enquiry" so no price is invented.
  */
-export const SAMPLE_PRODUCTS: Product[] = [
-  {
-    id: "av-sample-01",
-    slug: "sample-mul-cotton-blush-pink",
-    sku: "AV-SAMPLE-MC01",
+const CARE: Record<string, string[]> = {
+  "mul-cotton": [
+    "Gentle hand wash separately in cold water with mild detergent.",
+    "Dry in shade to preserve colour and print.",
+    "Steam or press on a low cotton setting.",
+  ],
+  georgette: [
+    "Dry clean recommended to keep the border finish and fluid fall.",
+    "Store folded in a breathable muslin cloth away from moisture.",
+  ],
+  "semi-pattu": [
+    "Dry clean only to preserve the lustre of the weave and zari.",
+    "Refold periodically along new creases and store in a cotton saree bag.",
+  ],
+  designer: [
+    "Specialist dry clean only.",
+    "Fold flat with tissue paper between embellished panels.",
+  ],
+  "work-sarees": [
+    "Dry clean only; keep perfume and sprays away from the embroidery.",
+    "Wrap in soft muslin inside a cool, dry wardrobe.",
+  ],
+};
+
+const SHIPPING = [
+  "Dispatch timelines and courier charges are confirmed when your order is reviewed.",
+  "Store pickup in Guntur or domestic shipping available on confirmation.",
+];
+
+const COLLECTION_NAMES: Record<Product["collectionSlug"], string> = {
+  "mul-cotton": "Mul Cotton Sarees",
+  georgette: "Georgette Sarees",
+  "semi-pattu": "Semi Pattu Sarees",
+  designer: "Designer Sarees",
+  "work-sarees": "Work Sarees",
+};
+
+type SampleInput = Pick<
+  Product,
+  "slug" | "sku" | "name" | "collectionSlug" | "occasions" | "fabric" | "colors" | "price" | "images" | "shortDescription" | "featured"
+>;
+
+function sample(i: number, p: SampleInput): Product {
+  return {
+    id: `av-sample-${String(i).padStart(2, "0")}`,
     isSample: true,
-    name: "Blush Pink Zari Border Mul Cotton Saree (Sample)",
+    currency: "INR",
+    ...(p.price !== null ? { priceLabel: "Sample Price" } : {}),
+    collectionName: COLLECTION_NAMES[p.collectionSlug],
+    description: `This is a clearly marked sample catalog entry for Aliveli Vasthralaya's ${COLLECTION_NAMES[p.collectionSlug]} collection. Replace with the exact fabric, length, blouse details and live store pricing once inventory is uploaded.`,
+    blouseIncludedNote: "Blouse piece details to be confirmed from live inventory.",
+    careInstructions: CARE[p.collectionSlug],
+    shippingInfo: SHIPPING,
+    sortOrder: i,
+    ...p,
+  };
+}
+
+export const SAMPLE_PRODUCTS: Product[] = [
+  sample(1, {
+    slug: "sample-mul-cotton-mustard-madhubani",
+    sku: "AV-SAMPLE-MC01",
+    name: "Mustard Madhubani Print Mul Cotton Saree (Sample)",
     collectionSlug: "mul-cotton",
-    collectionName: "Mul Cotton Sarees",
     occasions: ["everyday-elegance", "traditional-wear"],
     fabric: "Mul Cotton",
     colors: [
-      { name: "Blush Pink", hex: "#F2B8C0" },
-      { name: "Beige Gold", hex: "#E8D3A8" },
+      { name: "Mustard Yellow", hex: "#D9A520" },
+      { name: "Charcoal", hex: "#3B3B3B" },
     ],
     price: 2450,
-    currency: "INR",
-    priceLabel: "Sample Price",
-    images: [
-      "/images/prod-mul-rose.jpg",
-      "/images/col-mul-cotton.jpg",
-    ],
-    shortDescription:
-      "Sample catalog listing showcasing a lightweight mul cotton saree with a delicate contrast border.",
-    description:
-      "This is a clearly marked sample catalog entry for Aliveli Vasthralaya's Mul Cotton Sarees collection. Replace with actual garment weave notes, exact length, and live store pricing once inventory is uploaded.",
-    blouseIncludedNote: "Blouse piece details to be confirmed from live inventory.",
-    careInstructions: [
-      "Gentle hand wash separately in cold water with mild detergent.",
-      "Dry in shade to preserve color vibrancy and fabric softness.",
-      "Steam or press on low cotton heat setting.",
-    ],
-    shippingInfo: [
-      "Dispatch timelines and domestic courier charges are confirmed upon order review.",
-      "Available for local store pickup in Guntur or pan-India shipping once confirmed.",
-    ],
+    images: ["/images/saree-mul-cotton-1.webp"],
+    shortDescription: "Sample listing: soft mul cotton in mustard yellow with a hand-drawn Madhubani-style print and tassels.",
     featured: true,
-    sortOrder: 1,
-  },
-  {
-    id: "av-sample-02",
-    slug: "sample-georgette-indigo-floral",
+  }),
+  sample(2, {
+    slug: "sample-georgette-teal-zari-border",
     sku: "AV-SAMPLE-GG02",
-    isSample: true,
-    name: "Indigo Floral Print Georgette Saree (Sample)",
+    name: "Peacock Teal Georgette Saree with Zari Border (Sample)",
     collectionSlug: "georgette",
-    collectionName: "Georgette Sarees",
     occasions: ["festive-wear", "special-occasions"],
     fabric: "Georgette",
     colors: [
-      { name: "Indigo Blue", hex: "#2E3F9E" },
-      { name: "Sunset Orange", hex: "#F0642A" },
-      { name: "Sky Ombre", hex: "#7EC8F0" },
+      { name: "Peacock Teal", hex: "#0E6F80" },
+      { name: "Lime Yellow", hex: "#C9C431" },
     ],
     price: 3850,
-    currency: "INR",
-    priceLabel: "Sample Price",
-    images: [
-      "/images/prod-georgette-emerald.jpg",
-      "/images/col-georgette.jpg",
-      "/images/occ-everyday.jpg",
-    ],
-    shortDescription:
-      "Sample catalog listing featuring a lightweight printed georgette drape in bright indigo florals.",
-    description:
-      "This is a clearly marked sample catalog entry for Aliveli Vasthralaya's Georgette Sarees collection. Replace with verified measurements, border details, and live inventory pricing.",
-    blouseIncludedNote: "Blouse piece details to be confirmed from live inventory.",
-    careInstructions: [
-      "Dry clean recommended to maintain border finish and fluid fall.",
-      "Store folded in a breathable muslin cloth away from moisture.",
-    ],
-    shippingInfo: [
-      "Carefully packed in protective boutique wrapping prior to dispatch.",
-      "Shipping timeline confirmed prior to final payment.",
-    ],
+    images: ["/images/saree-georgette-1.webp"],
+    shortDescription: "Sample listing: fluid teal georgette with an embroidered gold border, paired with a lime blouse.",
     featured: true,
-    sortOrder: 2,
-  },
-  {
-    id: "av-sample-03",
-    slug: "sample-semi-pattu-parrot-green",
+  }),
+  sample(3, {
+    slug: "sample-semi-pattu-royal-blue",
     sku: "AV-SAMPLE-SP03",
-    isSample: true,
-    name: "Parrot Green Zari Semi Pattu Saree (Sample)",
+    name: "Royal Blue Semi Pattu Saree with Contrast Border (Sample)",
     collectionSlug: "semi-pattu",
-    collectionName: "Semi Pattu Sarees",
-    occasions: ["wedding-wear", "festive-wear", "traditional-wear"],
-    fabric: "Semi Pattu",
-    colors: [
-      { name: "Parrot Green", hex: "#4E9A2A" },
-      { name: "Lime Green", hex: "#A6C93A" },
-      { name: "Temple Gold", hex: "#D9A21B" },
-    ],
-    price: 5400,
-    currency: "INR",
-    priceLabel: "Sample Price",
-    images: [
-      "/images/prod-semipattu-maroon.jpg",
-      "/images/col-designer.jpg",
-      "/images/col-work.jpg",
-    ],
-    shortDescription:
-      "Sample catalog listing showcasing a lustrous parrot green semi pattu drape with a rich gold zari border.",
-    description:
-      "This is a clearly marked sample catalog entry for Aliveli Vasthralaya's Semi Pattu Sarees collection. Update with exact saree specifications, motif descriptions, and verified pricing.",
-    blouseIncludedNote: "Blouse piece details to be confirmed from live inventory.",
-    careInstructions: [
-      "Dry clean only to preserve the lustre of the weave and gold zari accents.",
-      "Refold periodically along alternate creases and store in a cotton saree bag.",
-    ],
-    shippingInfo: [
-      "Eligible for insured boutique dispatch or in-store collection at Guntur.",
-      "Confirm availability and dispatch timeline via WhatsApp or checkout enquiry.",
-    ],
-    featured: true,
-    sortOrder: 3,
-  },
-  {
-    id: "av-sample-04",
-    slug: "sample-designer-wine-organza",
-    sku: "AV-SAMPLE-DS04",
-    isSample: true,
-    name: "Wine Organza Embroidered Designer Saree (Sample)",
-    collectionSlug: "designer",
-    collectionName: "Designer Sarees",
-    occasions: ["special-occasions", "wedding-wear"],
-    fabric: "Designer Blend",
-    colors: [
-      { name: "Burgundy Wine", hex: "#8A1538" },
-      { name: "Bridal Red", hex: "#E0261B" },
-    ],
-    price: null, // Demonstrates authentic "Price on Enquiry" without inventing a price
-    currency: "INR",
-    images: [
-      "/images/col-designer-wine.jpg",
-      "/images/occ-wedding.jpg",
-    ],
-    shortDescription:
-      "Sample catalog listing representing bespoke-inspired designer drapes available on personal enquiry.",
-    description:
-      "This is a clearly marked sample catalog entry for Aliveli Vasthralaya's Designer Sarees collection. Pricing for select designer pieces is shared directly upon personal consultation and availability check.",
-    blouseIncludedNote: "Blouse styling options shared upon enquiry.",
-    careInstructions: [
-      "Specialist dry clean only.",
-      "Hang padded or fold flat with tissue paper between embellished panels.",
-    ],
-    shippingInfo: [
-      "Personal styling and measurement guidance available via store visit or WhatsApp.",
-    ],
-    featured: true,
-    sortOrder: 4,
-  },
-  {
-    id: "av-sample-05",
-    slug: "sample-work-saree-rust-cutwork",
-    sku: "AV-SAMPLE-WS05",
-    isSample: true,
-    name: "Rust Orange Stone & Cutwork Saree (Sample)",
-    collectionSlug: "work-sarees",
-    collectionName: "Work Sarees",
-    occasions: ["wedding-wear", "special-occasions", "festive-wear"],
-    fabric: "Embellished Silk Blend",
-    colors: [
-      { name: "Rust Orange", hex: "#B8501F" },
-      { name: "Antique Gold", hex: "#D9A21B" },
-    ],
-    price: 6900,
-    currency: "INR",
-    priceLabel: "Sample Price",
-    images: [
-      "/images/col-work-rust.jpg",
-      "/images/occ-special.jpg",
-    ],
-    shortDescription:
-      "Sample catalog listing featuring intricate antique gold border detailing for celebratory evenings.",
-    description:
-      "This is a clearly marked sample catalog entry for Aliveli Vasthralaya's Work Sarees collection. Replace with actual embellishment details, weight notes, and store pricing.",
-    blouseIncludedNote: "Blouse piece details to be confirmed from live inventory.",
-    careInstructions: [
-      "Dry clean only; avoid direct contact with perfume or sprays on metallic work.",
-      "Wrap in soft muslin inside a cool, dry wardrobe.",
-    ],
-    shippingInfo: [
-      "Dispatched in structured gift-ready packaging once confirmed by our team.",
-    ],
-    featured: true,
-    sortOrder: 5,
-  },
-  {
-    id: "av-sample-06",
-    slug: "sample-handloom-cotton-saffron",
-    sku: "AV-SAMPLE-MC06",
-    isSample: true,
-    name: "Saffron & Green Border Handloom Cotton Saree (Sample)",
-    collectionSlug: "mul-cotton",
-    collectionName: "Mul Cotton Sarees",
-    occasions: ["everyday-elegance"],
-    fabric: "Mul Cotton",
-    colors: [
-      { name: "Saffron Orange", hex: "#D9531E" },
-      { name: "Bottle Green", hex: "#1E7A3A" },
-    ],
-    price: 2250,
-    currency: "INR",
-    priceLabel: "Sample Price",
-    images: [
-      "/images/prod-work-ivory.jpg",
-      "/images/prod-designer-wine.jpg",
-    ],
-    shortDescription:
-      "Sample catalog listing highlighting breathable handloom cotton in bright saffron with a contrast green border.",
-    description:
-      "This is a clearly marked sample catalog entry showcasing everyday mul cotton elegance. Update with live store inventory details when ready.",
-    blouseIncludedNote: "Blouse piece details to be confirmed from live inventory.",
-    careInstructions: [
-      "Hand wash gently in cool water.",
-      "Line dry in shade.",
-    ],
-    shippingInfo: [
-      "Available for domestic shipping or Guntur store pickup upon confirmation.",
-    ],
-    featured: false,
-    sortOrder: 6,
-  },
-  {
-    id: "av-sample-07",
-    slug: "sample-semi-pattu-rani-pink",
-    sku: "AV-SAMPLE-SP07",
-    isSample: true,
-    name: "Rani Pink & Green Border Semi Pattu (Sample)",
-    collectionSlug: "semi-pattu",
-    collectionName: "Semi Pattu Sarees",
     occasions: ["traditional-wear", "festive-wear"],
     fabric: "Semi Pattu",
     colors: [
-      { name: "Rani Pink", hex: "#C2185B" },
-      { name: "Bottle Green", hex: "#1E7A3A" },
+      { name: "Royal Blue", hex: "#1F4E79" },
+      { name: "Lavender", hex: "#A99BD1" },
+    ],
+    price: 5400,
+    images: ["/images/saree-semi-pattu-1.webp"],
+    shortDescription: "Sample listing: lustrous royal blue semi pattu with small woven buttis and a lavender contrast border.",
+    featured: true,
+  }),
+  sample(4, {
+    slug: "sample-designer-maroon-mirror-work",
+    sku: "AV-SAMPLE-DS04",
+    name: "Maroon Mirror-Work Organza Designer Saree (Sample)",
+    collectionSlug: "designer",
+    occasions: ["wedding-wear", "special-occasions"],
+    fabric: "Organza",
+    colors: [{ name: "Deep Maroon", hex: "#7B1126" }],
+    price: null,
+    images: ["/images/saree-designer-1.webp"],
+    shortDescription: "Sample listing: maroon organza with mirror and sequin buttis and a scalloped border, available on enquiry.",
+    featured: true,
+  }),
+  sample(5, {
+    slug: "sample-work-saree-rust-embroidered",
+    sku: "AV-SAMPLE-WS05",
+    name: "Rust Brown Embroidered Work Saree (Sample)",
+    collectionSlug: "work-sarees",
+    occasions: ["wedding-wear", "special-occasions", "festive-wear"],
+    fabric: "Embroidered Tissue",
+    colors: [
+      { name: "Rust Brown", hex: "#8B4A26" },
+      { name: "Antique Gold", hex: "#C9962B" },
+    ],
+    price: 6900,
+    images: ["/images/saree-work-2.webp"],
+    shortDescription: "Sample listing: rust tissue saree with gold thread embroidery on the border and a matching work blouse.",
+    featured: true,
+  }),
+  sample(6, {
+    slug: "sample-mul-cotton-mint-block-print",
+    sku: "AV-SAMPLE-MC06",
+    name: "Mint Green Block Print Mul Cotton Saree (Sample)",
+    collectionSlug: "mul-cotton",
+    occasions: ["everyday-elegance"],
+    fabric: "Mul Cotton",
+    colors: [
+      { name: "Mint Green", hex: "#A8E0B8" },
+      { name: "Mustard", hex: "#D9A520" },
+    ],
+    price: 2250,
+    images: ["/images/saree-mul-cotton-2.webp"],
+    shortDescription: "Sample listing: breathable mint mul cotton with mustard block-print motifs and a zig-zag pallu.",
+    featured: false,
+  }),
+  sample(7, {
+    slug: "sample-mul-cotton-lemon-floral",
+    sku: "AV-SAMPLE-MC07",
+    name: "Lemon Yellow Floral Embroidered Mul Cotton Saree (Sample)",
+    collectionSlug: "mul-cotton",
+    occasions: ["everyday-elegance"],
+    fabric: "Mul Cotton",
+    colors: [{ name: "Lemon Yellow", hex: "#F3E58A" }],
+    price: null,
+    images: ["/images/saree-mul-cotton-3.webp"],
+    shortDescription: "Sample listing: light lemon mul cotton with delicate pink floral embroidery.",
+    featured: false,
+  }),
+  sample(8, {
+    slug: "sample-georgette-sage-sequin-border",
+    sku: "AV-SAMPLE-GG08",
+    name: "Sage Green Georgette Saree with Sequin Border (Sample)",
+    collectionSlug: "georgette",
+    occasions: ["special-occasions", "festive-wear"],
+    fabric: "Georgette",
+    colors: [{ name: "Sage Green", hex: "#6E9E5E" }],
+    price: null,
+    images: ["/images/saree-georgette-2.webp"],
+    shortDescription: "Sample listing: soft sage georgette with a shimmering sequin border.",
+    featured: false,
+  }),
+  sample(9, {
+    slug: "sample-georgette-red-embroidered",
+    sku: "AV-SAMPLE-GG09",
+    name: "Red Embroidered Georgette Saree (Sample)",
+    collectionSlug: "georgette",
+    occasions: ["festive-wear", "wedding-wear"],
+    fabric: "Georgette",
+    colors: [{ name: "Red", hex: "#C0162C" }],
+    price: 4100,
+    images: ["/images/saree-georgette-3.webp"],
+    shortDescription: "Sample listing: red georgette with a floral embroidered border and matching scalloped blouse.",
+    featured: false,
+  }),
+  sample(10, {
+    slug: "sample-semi-pattu-parrot-green-zari",
+    sku: "AV-SAMPLE-SP10",
+    name: "Parrot Green & Red Zari Semi Pattu Saree (Sample)",
+    collectionSlug: "semi-pattu",
+    occasions: ["wedding-wear", "festive-wear", "traditional-wear"],
+    fabric: "Semi Pattu",
+    colors: [
+      { name: "Parrot Green", hex: "#8DBE3C" },
+      { name: "Red", hex: "#C0162C" },
+      { name: "Gold", hex: "#C9962B" },
     ],
     price: 5150,
-    currency: "INR",
-    priceLabel: "Sample Price",
-    images: [
-      "/images/occ-traditional.jpg",
-      "/images/col-semi-pattu.jpg",
-    ],
-    shortDescription:
-      "Sample catalog listing featuring a vibrant rani pink drape paired with a contrast green border.",
-    description:
-      "This is a clearly marked sample catalog entry for Aliveli Vasthralaya's Semi Pattu Sarees collection.",
-    blouseIncludedNote: "Blouse piece details to be confirmed from live inventory.",
-    careInstructions: [
-      "Dry clean only.",
-      "Store wrapped in breathable cotton cloth.",
-    ],
-    shippingInfo: [
-      "Shipping details confirmed upon order enquiry.",
-    ],
+    images: ["/images/saree-semi-pattu-2.webp"],
+    shortDescription: "Sample listing: parrot green semi pattu with rich gold zari and a red border.",
     featured: false,
-    sortOrder: 7,
-  },
-  {
-    id: "av-sample-08",
-    slug: "sample-georgette-crimson-red",
-    sku: "AV-SAMPLE-GG08",
-    isSample: true,
-    name: "Crimson Red Plain Georgette Saree (Sample)",
-    collectionSlug: "georgette",
-    collectionName: "Georgette Sarees",
-    occasions: ["festive-wear", "special-occasions"],
-    fabric: "Georgette",
+  }),
+  sample(11, {
+    slug: "sample-designer-blush-embellished",
+    sku: "AV-SAMPLE-DS11",
+    name: "Blush Pink Embellished Designer Saree (Sample)",
+    collectionSlug: "designer",
+    occasions: ["wedding-wear", "special-occasions"],
+    fabric: "Designer Silk Blend",
+    colors: [{ name: "Blush Pink", hex: "#E8A3B4" }],
+    price: null,
+    images: ["/images/saree-designer-2.webp"],
+    shortDescription: "Sample listing: blush pink designer saree with a heavy embellished scalloped border, available on enquiry.",
+    featured: false,
+  }),
+  sample(12, {
+    slug: "sample-work-saree-sky-blue",
+    sku: "AV-SAMPLE-WS12",
+    name: "Sky Blue Work Saree with Embroidered Border (Sample)",
+    collectionSlug: "work-sarees",
+    occasions: ["special-occasions", "festive-wear"],
+    fabric: "Embroidered Silk Blend",
     colors: [
-      { name: "Crimson Red", hex: "#C8102E" },
+      { name: "Sky Blue", hex: "#9CCFE0" },
+      { name: "Pink", hex: "#E58AA6" },
     ],
-    price: 4100,
-    currency: "INR",
-    priceLabel: "Sample Price",
-    images: [
-      "/images/col-georgette-red.jpg",
-      "/images/insta-1.jpg",
-    ],
-    shortDescription:
-      "Sample catalog listing with a fluid crimson georgette drape for festive evenings and family celebrations.",
-    description:
-      "This is a clearly marked sample catalog entry for Aliveli Vasthralaya's festive saree selection.",
-    blouseIncludedNote: "Blouse piece details to be confirmed from live inventory.",
-    careInstructions: [
-      "Dry clean recommended.",
-    ],
-    shippingInfo: [
-      "Shipping details confirmed upon order enquiry.",
-    ],
+    price: null,
+    images: ["/images/saree-work-1.webp"],
+    shortDescription: "Sample listing: sky blue saree with gold thread work on the border and a contrast pink work blouse.",
     featured: false,
-    sortOrder: 8,
-  },
+  }),
 ];
 
 export const PLACEHOLDER_TESTIMONIALS: TestimonialItem[] = [
@@ -437,40 +382,10 @@ export const PLACEHOLDER_TESTIMONIALS: TestimonialItem[] = [
 ];
 
 export const INSTAGRAM_GALLERY_ITEMS = [
-  {
-    id: "ig-1",
-    image: "/images/insta-1.jpg",
-    caption: "Pastel floral print in full twirl",
-    collection: "Georgette Sarees",
-  },
-  {
-    id: "ig-2",
-    image: "/images/prod-semipattu-maroon.jpg",
-    caption: "Parrot green pattu with temple jewellery",
-    collection: "Semi Pattu Sarees",
-  },
-  {
-    id: "ig-3",
-    image: "/images/insta-3.jpg",
-    caption: "Grace in motion — festive celebratory hues",
-    collection: "Festive Edit",
-  },
-  {
-    id: "ig-4",
-    image: "/images/brand-story.jpg",
-    caption: "Red & gold checked cotton drape",
-    collection: "Mul Cotton Sarees",
-  },
-  {
-    id: "ig-5",
-    image: "/images/occ-wedding.jpg",
-    caption: "Bridal & ceremony inspirations",
-    collection: "Wedding Wear",
-  },
-  {
-    id: "ig-6",
-    image: "/images/col-designer-wine.jpg",
-    caption: "Wine organza with gold embroidery",
-    collection: "Designer Sarees",
-  },
+  { id: "ig-1", image: "/images/saree-mul-cotton-1.webp", caption: "Mustard Madhubani print mul cotton", collection: "Mul Cotton Sarees" },
+  { id: "ig-2", image: "/images/saree-georgette-2.webp", caption: "Sage georgette with a sequin border", collection: "Georgette Sarees" },
+  { id: "ig-3", image: "/images/saree-semi-pattu-2.webp", caption: "Parrot green & red zari semi pattu", collection: "Semi Pattu Sarees" },
+  { id: "ig-4", image: "/images/saree-designer-1.webp", caption: "Maroon mirror-work organza", collection: "Designer Sarees" },
+  { id: "ig-5", image: "/images/saree-work-1.webp", caption: "Sky blue with embroidered border", collection: "Work Sarees" },
+  { id: "ig-6", image: "/images/saree-georgette-3.webp", caption: "Red embroidered georgette", collection: "Georgette Sarees" },
 ];

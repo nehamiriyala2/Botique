@@ -1,33 +1,30 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------
-   Design tokens — editorial couture palette
-   (legacy token names kept so every existing page inherits the new look)
+   Design tokens — boutique palette (only these six colours + tints of them)
+     Ivory #FFFAF0 · Warm sand #F7EAD3 · Deep maroon #7B1126
+     Bright red-maroon #A3162F · Gold #C9962B · Maroon-black #3A0D14
+   Legacy token names are kept so every existing page picks up the palette.
 ------------------------------------------------------------------- */
 @theme inline {
-  /* Bright palette taken from the Aliveli crest: emerald, temple gold, crimson maroon, rani pink */
-  --color-maroon: #a3122f;       /* crimson maroon — primary accent */
-  --color-maroon-dark: #7a0c22;  /* deep crimson — button hover */
-  --color-maroon-soft: #c8284d;
-  --color-gold: #d9a21b;         /* temple gold */
-  --color-gold-light: #ffd66b;
-  --color-gold-muted: #a8790a;
-  --color-ivory: #fff4df;
-  --color-ivory-deep: #ffe6b8;
-  --color-paper: #fffaf0;
-  --color-ink: #1d1410;
-  --color-ink-muted: #5e4a3c;
-  --color-line: #e7c98c;
-  --color-dark: #0b4a2b;         /* emerald — dark sections (logo background) */
-  --color-emerald: #0f6b3c;
-  --color-emerald-bright: #18a05a;
-  --color-rani: #d81b74;         /* rani pink */
-  --color-saffron: #f58220;
-  --color-peacock: #0b8a8f;
-  --color-rose: #ffd66b;         /* accent on dark (emerald) sections */
-  --color-sand: #f4dca0;
-  --font-serif: "Newsreader Variable", "Newsreader", Georgia, serif;
-  --font-sans: "Manrope Variable", "Manrope", Arial, sans-serif;
+  --color-maroon: #7b1126;       /* deep maroon — buttons, links */
+  --color-maroon-dark: #a3162f;  /* bright red-maroon — hover & accents */
+  --color-maroon-soft: #a3162f;
+  --color-gold: #c9962b;         /* zari gold — borders, underlines */
+  --color-gold-light: #f7ead3;
+  --color-gold-muted: #6b484b;   /* text-safe muted tone */
+  --color-ivory: #f7ead3;        /* warm sand — alternate sections */
+  --color-ivory-deep: #f7ead3;
+  --color-sand-section: #f7ead3;
+  --color-paper: #fffaf0;        /* ivory — main background */
+  --color-ink: #3a0d14;          /* maroon-black — text */
+  --color-ink-muted: #6b484b;    /* 75% maroon-black on ivory */
+  --color-line: #e7cd97;         /* gold at ~45% on ivory */
+  --color-dark: #7b1126;         /* footer / announcement */
+  --color-rose: #f7ead3;         /* accent text on maroon */
+  --color-sand: #f7ead3;
+  --font-serif: "Fraunces Variable", "Fraunces", Georgia, serif;
+  --font-sans: "Figtree Variable", "Figtree", Arial, sans-serif;
 }
 
 :root {
@@ -61,6 +58,7 @@
     color: var(--color-ink);
     font-family: var(--font-sans);
     overflow-x: hidden;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -69,7 +67,8 @@
   h3 {
     font-family: var(--font-serif);
     font-weight: 400;
-    letter-spacing: -0.035em;
+    letter-spacing: -0.03em;
+    font-variation-settings: "SOFT" 30, "WONK" 0;
   }
 
   em {
@@ -79,8 +78,9 @@
   }
 
   :focus-visible {
-    outline: 1px solid var(--color-maroon);
-    outline-offset: 4px;
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 }
 
@@ -138,13 +138,13 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  color: var(--color-emerald);
+  color: var(--color-maroon);
   font-weight: 700;
 }
 .section-label > span {
   width: 44px;
   height: 2px;
-  background: linear-gradient(90deg, var(--color-gold), var(--color-rani));
+  background: var(--color-gold);
   flex-shrink: 0;
   transform-origin: left;
 }
@@ -199,58 +199,41 @@
 }
 
 /* Solid button (used sparingly) */
-.btn-solid {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  min-height: 50px;
-  padding: 0 28px;
-  border-radius: 9999px;
-  background: linear-gradient(100deg, var(--color-maroon), var(--color-rani));
-  box-shadow: 0 12px 24px -14px rgba(216, 27, 116, 0.7);
-  color: var(--color-paper);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  transition: color 0.5s var(--ease);
-}
-.btn-solid::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--color-maroon-dark);
-  transform: scaleY(0);
-  transform-origin: bottom;
-  transition: transform 0.6s var(--ease);
-  z-index: -1;
-}
-.btn-solid:hover::before {
-  transform: scaleY(1);
-}
+.btn-solid,
 .btn-ghost {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   min-height: 50px;
   padding: 0 28px;
   border-radius: 9999px;
-  border: 1.5px solid var(--color-emerald);
-  color: var(--color-emerald);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  transition: background 0.4s var(--ease), color 0.4s var(--ease);
+  letter-spacing: 0.04em;
+  transition: background-color 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease),
+    transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.btn-solid {
+  background: var(--color-maroon);
+  color: var(--color-paper);
+  border: 1.5px solid var(--color-maroon);
+}
+.btn-solid:hover {
+  background: var(--color-maroon-dark);
+  border-color: var(--color-maroon-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -14px rgba(58, 13, 20, 0.55);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--color-maroon);
+  border: 1.5px solid var(--color-maroon);
 }
 .btn-ghost:hover {
-  background: var(--color-emerald);
+  background: var(--color-maroon);
   color: var(--color-paper);
+  transform: translateY(-2px);
 }
 
 /* Hairline rule that draws in */
@@ -518,52 +501,82 @@
   background: var(--color-paper);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(15, 107, 60, 0.35);
+  background: rgba(123, 17, 38, 0.3);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(15, 107, 60, 0.6);
+  background: rgba(123, 17, 38, 0.55);
 }
 
 /* ------------------------------------------------------------------
-   Festive brights — hero, temple border, colour chips
+   Boutique details — zari strip, woven texture, cards
 ------------------------------------------------------------------- */
-.hero-festive {
+/* Thin gold zari border: a fine woven pattern between two hairlines */
+.zari {
+  height: 8px;
+  border-block: 1px solid var(--color-gold);
   background:
-    radial-gradient(circle at 78% 40%, rgba(255, 214, 107, 0.35), transparent 45%),
-    radial-gradient(circle at 10% 90%, rgba(216, 27, 116, 0.28), transparent 40%),
-    linear-gradient(135deg, #031f08 0%, #063a14 50%, #0b4a2b 100%);
+    repeating-linear-gradient(45deg, var(--color-gold) 0 1.5px, transparent 1.5px 6px),
+    repeating-linear-gradient(-45deg, var(--color-gold) 0 1.5px, transparent 1.5px 6px);
+  opacity: 0.85;
 }
-.hero-festive em {
-  color: var(--color-gold-light);
+.zari-thin {
+  height: 4px;
+  border-top: 1px solid var(--color-gold);
+  background: repeating-linear-gradient(90deg, var(--color-gold) 0 6px, transparent 6px 10px);
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
 }
-/* Woven temple-border stripe (saree zari look) */
-.temple-border {
-  height: 14px;
-  background:
-    linear-gradient(135deg, var(--color-gold) 25%, transparent 25%) -7px 0 / 14px 14px,
-    linear-gradient(225deg, var(--color-gold) 25%, transparent 25%) -7px 0 / 14px 14px,
-    linear-gradient(315deg, var(--color-gold) 25%, transparent 25%) 0 0 / 14px 14px,
-    linear-gradient(45deg, var(--color-gold) 25%, transparent 25%) 0 0 / 14px 14px,
-    linear-gradient(90deg, var(--color-maroon), var(--color-rani), var(--color-maroon));
+/* Subtle woven-thread texture (warp + weft) for collection tiles */
+.woven {
+  background-color: var(--color-ivory);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(201, 150, 43, 0.12) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, rgba(123, 17, 38, 0.06) 0 1px, transparent 1px 4px);
 }
-.logo-glow {
-  filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 40px rgba(255, 214, 107, 0.35));
+.card {
+  border-radius: 20px;
+  border: 1px solid var(--color-line);
+  background: var(--color-paper);
+  overflow: hidden;
+  transition: box-shadow 0.35s var(--ease), transform 0.35s var(--ease);
 }
-.chip {
+.card:hover {
+  box-shadow: 0 22px 40px -26px rgba(58, 13, 20, 0.45);
+}
+.gold-frame {
+  border-radius: 28px;
+  padding: 10px;
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-gold);
+  box-shadow: inset 0 0 0 4px var(--color-paper), inset 0 0 0 5px rgba(201, 150, 43, 0.55);
+}
+.eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 40px;
-  padding: 0 18px;
-  border-radius: 9999px;
+  gap: 12px;
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: #fff;
-  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-maroon);
 }
-.chip:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.45);
+.eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1.5px;
+  background: var(--color-gold);
+}
+.h-display {
+  font-family: var(--font-serif);
+  font-size: clamp(40px, 6vw, 76px);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+.h-section {
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 4.2vw, 52px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
 }

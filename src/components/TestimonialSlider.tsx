@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { PLACEHOLDER_TESTIMONIALS } from "@/data/catalog";
+import { TestimonialItem } from "@/lib/db/schema";
 
 const DURATION = 7000;
 
@@ -10,8 +10,7 @@ const DURATION = 7000;
  * Client stories carousel: large crossfading serif quote, autoplay with a
  * drawn progress hairline, counter, and an aside listing the other stories.
  */
-export function TestimonialSlider() {
-  const items = PLACEHOLDER_TESTIMONIALS;
+export function TestimonialSlider({ items }: { items: TestimonialItem[] }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 

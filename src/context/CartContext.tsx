@@ -121,7 +121,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             selectedColorHex: colorHex,
             price: product.price,
             isSample: product.isSample,
-            image: product.images[0] ?? "/images/hero-saree.jpg",
+            image: product.images[0] ?? "/images/saree-designer-1.webp",
             quantity: qtyToAdd,
           },
         ];

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Heart, Plus } from "lucide-react";
+import { Check, Heart, MessageCircle, Plus } from "lucide-react";
 import { Product } from "@/lib/db/schema";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -21,7 +21,6 @@ export function ProductCard({ product, index }: ProductCardProps) {
 
   const activeColor = product.colors[selectedColorIndex] ?? product.colors[0];
   const saved = isSaved(product.id);
-  const hoverImage = product.images[1];
 
   const whatsappUrl = buildWhatsAppEnquiryUrl(
     `Hello Aliveli Vasthralaya, I would like to enquire about "${product.name}" (SKU: ${product.sku}, Color: ${activeColor?.name ?? "Default"}).`
@@ -34,78 +33,67 @@ export function ProductCard({ product, index }: ProductCardProps) {
   };
 
   return (
-    <article className="group flex flex-col">
+    <article className="card group flex flex-col h-full">
       {/* Image */}
-      <div className="relative aspect-[4/5] overflow-hidden bg-ivory-deep">
+      <div className="relative aspect-[4/5] overflow-hidden bg-ivory">
         <Link href={`/products/${product.slug}`} className="block w-full h-full" aria-label={product.name}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={product.images[0]}
-            alt={product.name}
+            alt={`${product.name.replace(/\s*\(Sample\)\s*$/, "")} — ${product.collectionName}`}
+            width={800}
+            height={1000}
             loading="lazy"
-            className="absolute inset-0 w-full h-full object-cover transition-[transform,opacity] duration-[1400ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.045]"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]"
           />
-          {hoverImage && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={hoverImage}
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-              className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-            />
-          )}
         </Link>
 
-        <div className="absolute top-4 left-4 right-4 flex items-start justify-between pointer-events-none">
-          <span className="micro bg-paper/90 text-ink px-2.5 py-1">{product.fabric}</span>
+        <div className="absolute top-3 left-3 right-3 flex items-start justify-between pointer-events-none">
+          <span className="flex flex-wrap gap-1.5">
+            <span className="rounded-full bg-paper/95 text-ink text-[11.5px] font-semibold px-3 py-1">{product.fabric}</span>
+            {product.isSample && (
+              <span className="rounded-full bg-maroon text-paper text-[11.5px] font-semibold px-3 py-1">Sample</span>
+            )}
+          </span>
           <button
             type="button"
             onClick={() => toggleSaved(product.id)}
             aria-label={saved ? "Remove from saved sarees" : "Save saree"}
-            className={`pointer-events-auto w-9 h-9 rounded-full flex items-center justify-center transition-colors ${
-              saved ? "bg-maroon text-paper" : "bg-paper/90 text-ink hover:text-maroon"
+            aria-pressed={saved}
+            className={`pointer-events-auto w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+              saved ? "bg-maroon text-paper" : "bg-paper/95 text-ink hover:text-maroon"
             }`}
           >
-            <Heart className={`w-4 h-4 stroke-[1.4] ${saved ? "fill-current" : ""}`} />
+            <Heart className={`w-4 h-4 stroke-[1.6] ${saved ? "fill-current" : ""}`} />
           </button>
         </div>
-
-        {/* Quick add slides up on hover (always visible on touch) */}
-        <button
-          type="button"
-          onClick={handleAdd}
-          className="absolute inset-x-4 bottom-4 min-h-[46px] bg-paper/95 text-ink text-[11px] font-semibold tracking-[0.14em] uppercase inline-flex items-center justify-between px-5 transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)] lg:translate-y-[calc(100%+20px)] lg:opacity-0 group-hover:translate-y-0 group-hover:opacity-100 focus-visible:translate-y-0 focus-visible:opacity-100 hover:bg-maroon hover:text-paper"
-        >
-          {added ? "Added to bag" : "Add to bag"}
-          <Plus className="w-4 h-4 stroke-[1.4]" />
-        </button>
       </div>
+      <div className="zari" aria-hidden="true" />
 
       {/* Info */}
-      <div className="pt-5 flex flex-col gap-2">
-        <div className="flex items-baseline gap-3 micro text-ink-muted">
-          {typeof index === "number" && <span>{String(index + 1).padStart(2, "0")}</span>}
-          <span>{product.collectionName}</span>
-          {product.isSample && <span className="ml-auto text-maroon/80">Sample</span>}
-        </div>
+      <div className="p-5 flex flex-col gap-2 flex-1">
+        <p className="text-[12px] font-semibold tracking-[0.12em] uppercase text-ink-muted">
+          {typeof index === "number" && <span className="text-gold mr-2">{String(index + 1).padStart(2, "0")}</span>}
+          {product.collectionName}
+        </p>
 
         <Link href={`/products/${product.slug}`}>
-          <h3 className="font-serif text-[23px] leading-[1.2] tracking-[-0.025em] text-ink group-hover:text-maroon transition-colors">
+          <h3 className="font-serif text-[21px] leading-[1.25] tracking-[-0.02em] text-ink hover:text-maroon transition-colors">
             {product.name.replace(/\s*\(Sample\)\s*$/, "")}
           </h3>
         </Link>
 
-        <div className="flex items-center justify-between gap-4 mt-1">
+        <div className="flex items-center justify-between gap-4">
           {product.price !== null ? (
-            <span className="text-[14px] text-ink">
+            <span className="text-[16px] font-semibold text-ink">
               ₹{product.price.toLocaleString("en-IN")}
               {product.priceLabel && (
-                <span className="ml-2 text-[11px] text-ink-muted">{product.priceLabel}</span>
+                <span className="ml-2 text-[12px] font-normal text-ink-muted">{product.priceLabel}</span>
               )}
             </span>
           ) : (
-            <span className="font-serif italic text-[16px] text-maroon">Price on enquiry</span>
+            <span className="font-serif italic text-[17px] text-maroon">Price on enquiry</span>
           )}
 
           <div className="flex items-center gap-1.5">
@@ -115,10 +103,10 @@ export function ProductCard({ product, index }: ProductCardProps) {
                 type="button"
                 title={color.name}
                 onClick={() => setSelectedColorIndex(idx)}
-                aria-label={`Select color ${color.name}`}
+                aria-label={`Select colour ${color.name}`}
                 aria-pressed={idx === selectedColorIndex}
-                className={`w-3.5 h-3.5 rounded-full border border-ink/15 transition-transform ${
-                  idx === selectedColorIndex ? "ring-1 ring-ink ring-offset-2 ring-offset-paper" : "hover:scale-110"
+                className={`w-4 h-4 rounded-full border border-ink/20 transition-transform ${
+                  idx === selectedColorIndex ? "ring-[1.5px] ring-gold ring-offset-2 ring-offset-paper" : "hover:scale-110"
                 }`}
                 style={{ backgroundColor: color.hex }}
               />
@@ -126,15 +114,16 @@ export function ProductCard({ product, index }: ProductCardProps) {
           </div>
         </div>
 
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-link !min-h-[40px] !text-[13px] self-start mt-1"
-        >
-          Enquire on WhatsApp
-          <ArrowRight className="w-3.5 h-3.5" />
-        </a>
+        <div className="mt-auto pt-3 grid grid-cols-1 gap-2">
+          <button type="button" onClick={handleAdd} className="btn-solid !min-h-[44px] w-full" aria-live="polite">
+            {added ? <Check className="w-4 h-4" aria-hidden="true" /> : <Plus className="w-4 h-4" aria-hidden="true" />}
+            {added ? "Added to bag" : "Add to bag"}
+          </button>
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn-ghost !min-h-[44px] w-full">
+            <MessageCircle className="w-4 h-4" aria-hidden="true" />
+            Enquire on WhatsApp
+          </a>
+        </div>
       </div>
     </article>
   );
